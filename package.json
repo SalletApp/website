@@ -1,0 +1,53 @@
+{
+  "name": "simple-wallet",
+  "version": "0.1.1",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export",
+    "codegen": "graphclient build",
+    "dev-gc": "graphclient serve-dev"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.2",
+    "@chakra-ui/react": "^2.2.1",
+    "@chakra-ui/theme-tools": "^2.0.2",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.9.0",
+    "@fontsource/merriweather": "^4.5.14",
+    "@fontsource/montserrat": "^4.5.13",
+    "@vercel/analytics": "^0.1.3",
+    "bip32": "^4.0.0",
+    "bip39": "^3.1.0",
+    "bitcoinjs-lib": "^6.1.3",
+    "crypto-js": "^4.1.1",
+    "dexie": "^3.2.2",
+    "dexie-react-hooks": "^1.1.1",
+    "dotenv": "^16.0.1",
+    "ethers": "^5.7.0",
+    "framer-motion": "^6.3.0",
+    "graphql": "^16.6.0",
+    "next": "latest",
+    "next-pwa": "^5.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10",
+    "react-hotjar": "^5.2.0",
+    "react-qr-code": "^2.0.7",
+    "tiny-secp256k1": "^2.2.3"
+  },
+  "devDependencies": {
+    "@graphprotocol/client-cli": "^2.2.15",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.0.23",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^4.7.2"
+  },
+  "author": {
+    "email": "llamasjonat@gmail.com",
+    "name": "Jonathan Llamas",
+    "url": "https://twitter.com/unllamas"
+  }
+}
