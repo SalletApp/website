@@ -7,13 +7,14 @@ import { useBlockchain } from './Blockchain';
 import { useAccount } from './Account';
 
 import abiDAI from 'src/utils/abi/DAI.json';
-import abiUSDC from 'src/utils/abi/USDC.json';
+import abiNARS from 'src/utils/abi/NARS.json';
 
 type TokenName = 'eth' | 'dai';
 interface TokenContextInterface {
   tokens: {
     eth: BigNumber;
     dai: BigNumber;
+    // nars: BigNumber;
   };
   sendTransaction: (address: string, mount: number, token: TokenName) => null;
 }
@@ -26,22 +27,23 @@ const TokenContext = createContext<TokenContextInterface | null>(null);
 // Test
 const addressDAI = '0x11fe4b6ae13d2a6055c8d9cf65c55bac32b5d844';
 const addressUSDC = '0xe27658a36ca8a59fe5cc76a14bde34a51e587ab4';
+const addressNARS = '0x5e40f26E89213660514c51Fb61b2d357DBf63C85';
 
 export function TokenWrapper({ children }) {
   // Chakra
   const toast = useToast();
 
   // Context
-  const { kovanProvider } = useBlockchain();
+  const { kovanProvider, laChainProvider } = useBlockchain();
   const { wallet, signer } = useAccount();
 
   // Component
   const [tokenETH, setTokenETH] = useState(ethers.constants.Zero);
   const [tokenDAI, setTokenDAI] = useState(ethers.constants.Zero);
-  const [tokenUSDC, setTokenUSDC] = useState(ethers.constants.Zero);
+  const [tokenNARS, setTokenNARS] = useState(ethers.constants.Zero);
 
   const providerDAI = new ethers.Contract(addressDAI, abiDAI, kovanProvider);
-  const providerUSDC = new ethers.Contract(addressUSDC, abiUSDC, kovanProvider);
+  // const providerNARS = new ethers.Contract(addressNARS, abiNARS, laChainProvider);
 
   // Obtener balance de Ethereum y DAI
   if (!!wallet?.address?.eth) {
@@ -60,6 +62,14 @@ export function TokenWrapper({ children }) {
         });
       }
     });
+
+    // laChainProvider.on('block', () => {
+    //   providerNARS.balanceOf(wallet?.address?.eth).then((balance) => {
+    //     if (!balance?.eq(tokenNARS)) {
+    //       setTokenNARS(balance);
+    //     }
+    //   });
+    // });
   }
 
   // Enviar transaccion

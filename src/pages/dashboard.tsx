@@ -67,8 +67,9 @@ const Dashboard = ({ price }) => {
         <title>Wallet - Sallet</title>
       </Head>
       <Navbar type={openModal ? 'modal' : 'page'} title={typeModal || ''} onClose={handleCloseFullModal} />
-      <ScreenView justifyContent='center'>
+      <ScreenView justifyContent={{ base: 'start', md: 'center' }}>
         <Container size='small'>
+          <Divider y={16} />
           {/* Balance */}
           <Flex direction='column' align='center'>
             <Flex justify='center' align='center' gap={8}>
@@ -114,8 +115,16 @@ const Dashboard = ({ price }) => {
           <Divider y={32} />
 
           {/* Tokens */}
+          {/* <Text isBold>Regionales</Text>
+          <Divider y={8} />
+          <Token name='nars' token={tokens?.nars} price={cryptoToUSD(price?.dai?.values?.bid, tokens?.nars)} readOnly />
+          <Divider y={16} /> */}
+          <Text isBold>Tokens</Text>
+          <Divider y={8} />
           <Token name='eth' token={tokens?.eth} price={cryptoToUSD(price?.eth?.values?.bid, tokens?.eth)} readOnly />
+          <Divider y={2} />
           <Token name='dai' token={tokens?.dai} price={cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)} readOnly />
+          <Divider y={16} />
         </Container>
       </ScreenView>
 
