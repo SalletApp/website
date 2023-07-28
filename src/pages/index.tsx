@@ -18,7 +18,7 @@ const Index = () => {
   // Context
   const { wallet } = useAccount();
 
-  if (wallet?.account) {
+  if (!!wallet?.account) {
     router.push('/dashboard');
     return false;
   }
