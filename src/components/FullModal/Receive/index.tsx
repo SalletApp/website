@@ -43,8 +43,8 @@ const Component = ({ onClose }) => {
         >
           {wallet?.address?.eth && <QRCode value={wallet?.address?.eth} />}
         </Flex>
-        <Divider y={16} />
         <Container size='small'>
+          <Divider y={16} />
           <Flex flexDirection='column' alignItems='center' gap='20px'>
             <Flex w='100%' justifyContent='space-between' alignItems='center'>
               <AddressBox title='Address' address={wallet?.address?.eth} />
@@ -56,8 +56,8 @@ const Component = ({ onClose }) => {
             </Flex>
             {/* <Text align='center'>Lorem ipsum dolor sit amet consectetur adipisicing elit. </Text> */}
           </Flex>
+          <Divider y={16} />
         </Container>
-        <Divider y={16} />
       </ScreenView>
     </>
   );
