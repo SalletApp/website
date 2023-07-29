@@ -137,7 +137,7 @@ const Component = ({ onClose }) => {
     if (enterPress) {
       switch (step) {
         case 'address':
-          toAddress && setStep('token');
+          toAddress !== null && toAddress !== '' && addressIsValid && setStep('token');
           break;
         case 'token':
           tokenSelected && setStep('amount');
@@ -399,7 +399,7 @@ const Component = ({ onClose }) => {
               Cancelar
             </Button>
             {step === 'address' && (
-              <Button onClick={() => toAddress && setStep('token')} isDisabled={!toAddress}>
+              <Button onClick={continueToken} isDisabled={!toAddress}>
                 {loading ? <Spinner /> : 'Continuar'}
               </Button>
             )}
@@ -411,7 +411,9 @@ const Component = ({ onClose }) => {
             {step === 'amount' && (
               <Button
                 onClick={handleShowSumary}
-                isDisabled={!mount || mount === '0' || mount === '0.' || mount === '.' || mount === ','}
+                isDisabled={
+                  !mount || mount === '0' || mount === '0.' || mount === '.' || mount === ',' || !addressIsValid
+                }
               >
                 {loading ? <Spinner /> : 'Continuar'}
               </Button>
