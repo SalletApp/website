@@ -5,24 +5,43 @@ import Button from 'src/components/Shared/Button';
 import Input from 'src/components/Shared/Input';
 
 import useTruncatedAddress from 'src/hooks/useTruncatedAddress';
+import useKeyPress from 'src/hooks/useKeyPress';
 
 const Component = (props) => {
-  const { placeholder, value, onChange, onClick } = props;
+  const { placeholder, value, onChange, onClick, addressIsValid, setAddressIsValid } = props;
 
   // Chakra
   const toast = useToast();
 
+  // Hooks
+  const deletePress = useKeyPress('Backspace');
+
   const handlePasteAddress = async () => {
     try {
       const text = await navigator.clipboard.readText();
-      const addressIsValid = ethers.utils.isAddress(text);
+      const isValid = ethers.utils.isAddress(text);
+      setAddressIsValid(isValid);
 
-      if (addressIsValid) {
+      if (isValid) {
         onClick(text);
+        toast({
+          title: 'Perfecto',
+          description: 'La dirección de esta billetera es correcta',
+          status: 'success',
+          position: 'top',
+          duration: '2000',
+          isClosable: true,
+        });
       } else {
         toast({
           description: 'La address parece ser incorrecta.',
           status: 'warning',
+          title: 'Error',
+          description: 'La dirección de esta billetera es incorrecta o inválida',
+          status: 'error',
+          position: 'top',
+          duration: '2000',
+          isClosable: true,
         });
       }
     } catch (err) {
@@ -30,18 +49,19 @@ const Component = (props) => {
     }
   };
 
-  const handleValidateAddress = (value) => {
-    const addressIsValid = ethers.utils.isAddress(value);
-    if (addressIsValid) {
-      onChange(value);
+  const handleValidateAddress = ({ target: { value } }) => {
+    if (deletePress) {
+      onChange('');
+      return;
     }
-    // else {
-    //   toast({
-    //     description: 'La address parece ser incorrecta.',
-    //     status: 'warning',
-    //   });
-    // }
+
+    const isValid = ethers.utils.isAddress(value);
+    setAddressIsValid(isValid);
+    onChange(value);
   };
+
+  const truncated = addressIsValid && value !== null && value !== '';
+  const inputValue = truncated ? useTruncatedAddress(value) : value;
 
   const style = {
     position: 'relative',
@@ -68,8 +88,8 @@ const Component = (props) => {
     <Box {...style}>
       <Input
         placeholder={placeholder}
-        value={value && useTruncatedAddress(value)}
-        onChange={(e) => handleValidateAddress(e.target.value)}
+        value={inputValue}
+        onChange={handleValidateAddress}
         autoFocus={!value}
         {...inputStyle}
       />
