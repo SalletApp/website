@@ -26,7 +26,7 @@ const Backup = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { wallet } = useAccount();
 
-  const mnemonic = decrypt(wallet?.seedPhrase)?.replaceAll('"', '');
+  const mnemonic = decrypt(wallet?.account?.seedPhrase)?.replaceAll('"', '');
 
   const [hasSave, setHasSave] = useState(false);
 
@@ -54,9 +54,12 @@ const Backup = () => {
       onOpen();
     } else {
       toast({
-        title: 'Frase semilla incorrecta',
+        title: 'Frase semilla incorrecta.',
         description: 'Verifique que la frase semilla sea correcta.',
         status: 'warning',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
       });
     }
   };
@@ -81,30 +84,30 @@ const Backup = () => {
           {showMnemonic ? (
             showValidateMnemonic ? (
               <>
-                <Heading as='h2'>Revisémoslo nuevamente</Heading>
+                <Heading as='h2'>¡Verifiquemos juntos!</Heading>
                 <Divider y={8} />
-                <Text size='size'>
-                  Escribe tu frase semilla en el orden en que estaban anteriormente para validar que lo has hecho bien
-                  :)
+                <Text size='large'>
+                  Escribe en orden las palabras que guardamos para verificar que realmente lo hemos hecho bien.
                 </Text>
               </>
             ) : (
               <>
-                <Heading as='h2'>Frase semilla</Heading>
+                <Heading as='h2'>Frase semilla.</Heading>
                 <Divider y={8} />
                 <Text size='large'>
-                  Es muy importante que guardes esta frase semilla. Es la clave principal para poder reclamar tus
-                  activos en cualquier wallet non-custodial.
+                  La frase semilla es un grupo de 12 palabras que son la llave principal de tus activos.
                 </Text>
               </>
             )
           ) : (
             <>
-              <Heading>Not your keys, not your coins</Heading>
+              <Heading>
+                Sin frase,
+                <br /> no hay dinero.
+              </Heading>
               <Divider y={8} />
               <Text size='large'>
-                Nosotros te ayudamos a recibir pagos o donaciones desde cualquier parte del mundo, pero en realidad eres
-                tú el dueño de los activos.
+                A los cripto-usuarios nos gusta usar esta frase para recordar que sin frase semilla, no hay activos.
               </Text>
             </>
           )}
@@ -129,7 +132,7 @@ const Backup = () => {
                 borderRadius='4px'
                 onChange={() => setHasSave(!hasSave)}
               >
-                Confirmo haberlas guardado
+                Confirmo haberlas guardado.
               </Checkbox>
             </>
           )}

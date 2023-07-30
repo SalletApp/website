@@ -27,25 +27,26 @@ const Index = () => {
     <>
       <Navbar />
       <ScreenView justify='center'>
-        <Container size='small'>
-          <Flex direction={'column'} align='center'>
-            <Heading as='h1' align='center'>
-              Aceptar cripto-activos nunca fue tan fácil.
+        <Container height={{ base: '100%', md: 'auto' }}>
+          <Flex direction={'column'} flex={{ base: 1, md: 'inherit' }} justify='center' maxWidth='500px'>
+            <Heading as='h1' align={{ base: 'center', md: 'left' }}>
+              Un paso adelante hacia la libertad financiera.
             </Heading>
-            <Text size='large' align='center'>
-              Ten el control total de tus finanzas. <br />
-              <strong>Wallet non-custodial</strong> para <strong>ETH</strong>.
+            <Divider y={8} />
+            <Text size='large' align={{ base: 'center', md: 'left' }}>
+              Gestionar tus cripto-activos nunca ha sido tan sencillo y seguro. ¡Tu poder financiero en tus manos!
             </Text>
-            <Divider y={16} />
-            <Flex direction={{ base: 'column-reverse', md: 'row' }} gap={8}>
-              <Link href='/signin' type='bezeled' passHref>
-                Ya tengo una billetera
-              </Link>
-              <Link href='/create' passHref>
-                Crear billetera
-              </Link>
-            </Flex>
           </Flex>
+          <Divider y={16} />
+          <Flex direction={{ base: 'column-reverse', md: 'row' }} gap={8}>
+            <Link href='/signin' type='bezeled' passHref>
+              Ya tengo una billetera
+            </Link>
+            <Link href='/create' passHref>
+              Crear billetera
+            </Link>
+          </Flex>
+          <Divider y={16} />
         </Container>
       </ScreenView>
     </>

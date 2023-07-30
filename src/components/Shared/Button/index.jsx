@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 
 const Component = (props) => {
-  const { children, brand = 'primary', size = 'large', type = 'filled' } = props;
+  const { children, brand = 'primary', size = 'large', type = 'filled', isBlock = false } = props;
 
   const isLarge = size === 'large';
   const isSolid = type === 'filled';
@@ -21,7 +21,7 @@ const Component = (props) => {
     width: '100%',
     height: isLarge ? dimensions.largeHeight : dimensions.height,
     minWidth: isLarge ? dimensions.largeMinWidth : dimensions.minWidth,
-    maxWidth: { base: 'initial', md: '200px' },
+    maxWidth: { base: 'initial', md: isBlock ? '100%' : '200px' },
 
     padding: isLarge ? '13px' : '4px 7px',
 

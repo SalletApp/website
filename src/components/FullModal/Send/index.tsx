@@ -104,8 +104,11 @@ const Component = ({ onClose }) => {
         setLoading(false);
         if (error?.code === 'INSUFFICIENT_FUNDS') {
           toast({
-            description: 'No tienes fondos suficientes',
+            title: 'Fondos insuficientes.',
+            description: 'No hemos detectado fondos en su cuenta y/o token.',
             status: 'warning',
+            position: 'top',
+            duration: 4000,
           });
         }
       }
@@ -215,14 +218,15 @@ const Component = ({ onClose }) => {
   return (
     <>
       <Navbar type='modal' title='Testeando' onClose={handleCloseModal} />
-      <ScreenView justifyContent='center'>
+      <ScreenView justifyContent={{ base: 'flex-start', md: 'center' }}>
         <Container size='small'>
+          <Divider y={32} />
           <Flex direction='column' gap='10px'>
             {/* Step Account */}
             {step === 'address' ? (
               <>
                 <InputWithButton
-                  placeholder='Address'
+                  placeholder='Billetera'
                   value={toAddress}
                   onChange={setToAddress}
                   onClick={setToAddress}
@@ -231,7 +235,7 @@ const Component = ({ onClose }) => {
                 />
                 <Divider y={16} />
                 <Text align='center'>
-                  Al enviar <strong>siempre verifica</strong> que las direcciones pertenecen al ecosistema de Ethereum.
+                  <strong>Verifica</strong> siempre los últimos 3 caracteres.
                 </Text>
               </>
             ) : (
@@ -256,7 +260,7 @@ const Component = ({ onClose }) => {
             {step === 'token' ? (
               <>
                 <Text size='large' isBold>
-                  Que deseas enviar
+                  ¿Qué deseas enviar?
                 </Text>
                 <Divider y={16} />
                 <Token
@@ -300,7 +304,7 @@ const Component = ({ onClose }) => {
             {step === 'amount' ? (
               <>
                 <Text size='large' isBold>
-                  Cuanto deseas enviar
+                  ¿Cuánto deseas enviar?
                 </Text>
                 <Divider y={16} />
                 <Flex gap={8}>
@@ -320,7 +324,7 @@ const Component = ({ onClose }) => {
                   {/* <InputWithToken value={mount} onChange={(e) => setMount(e.target.value)} /> */}
                 </Flex>
                 <Divider y={8} />
-                <Flex justify='center'>
+                <Flex justify='center' gap={4}>
                   <Text>Disponible: </Text>
                   <Text isBold>${Number(totalTokensUSD[tokenSelected]).toFixed(2)}</Text>
                 </Flex>
@@ -359,6 +363,7 @@ const Component = ({ onClose }) => {
               )
             )}
           </Flex>
+          <Divider y={32} />
         </Container>
       </ScreenView>
 

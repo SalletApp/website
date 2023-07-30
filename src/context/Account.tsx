@@ -140,9 +140,12 @@ export function AccountWrapper({ children }) {
       }
     } else {
       toast({
-        title: 'Frase semilla incorrecta',
-        description: 'Verifique que la frase semilla sea correcta.',
+        title: 'Frase semilla incorrecta.',
+        description: 'Verifica que la frase semilla sea correcta.',
         status: 'warning',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
       });
       return { success: false, error: null };
     }

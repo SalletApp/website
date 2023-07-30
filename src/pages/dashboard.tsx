@@ -16,6 +16,7 @@ import ScreenView from 'src/components/Layout/ScreenView';
 import FullModal from 'src/components/FullModal';
 import Flex from 'src/components/Shared/Flex';
 import Divider from 'src/components/Shared/Divider';
+import Button from 'src/components/Shared/Button';
 
 import Token from '../components/Token';
 
@@ -69,10 +70,11 @@ const Dashboard = ({ price }) => {
       <Navbar type={openModal ? 'modal' : 'page'} title={typeModal || ''} onClose={handleCloseFullModal} />
       <ScreenView justifyContent='center'>
         <Container size='small'>
+          <Divider y={32} />
           {/* Balance */}
           <Flex direction='column' align='center'>
             <Flex justify='center' align='center' gap={8}>
-              <Text size='small'>Su balance</Text>
+              <Text size='small'>Balance</Text>
               {/* POC */}
               <TextDemo
                 bg='terciary15'
@@ -116,6 +118,14 @@ const Dashboard = ({ price }) => {
           {/* Tokens */}
           <Token name='eth' token={tokens?.eth} price={cryptoToUSD(price?.eth?.values?.bid, tokens?.eth)} readOnly />
           <Token name='dai' token={tokens?.dai} price={cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)} readOnly />
+
+          <Divider y={16} />
+          <Flex>
+            <Button isBlock type='bezeledGray'>
+              Ver historial
+            </Button>
+          </Flex>
+          <Divider y={32} />
         </Container>
       </ScreenView>
 
@@ -124,13 +134,16 @@ const Dashboard = ({ price }) => {
         <Flex background='terciary15'>
           <Container>
             <Divider y={16} />
-            <Flex direction={{ base: 'column', md: 'row' }} align='normal' justify='center' gap={8}>
-              <Flex align='center'>
-                <Text>
-                  Es muy importante que guardes bien esta <strong>frase semilla</strong>, ya que es la{' '}
-                  <strong>llave principal a sus cripto-activos</strong>.
-                </Text>
-              </Flex>
+            <Flex
+              direction={{ base: 'column', md: 'row' }}
+              align='center'
+              justify={{ base: 'center', md: 'space-between' }}
+            >
+              <Text align={{ base: 'center', md: 'left' }}>
+                Asegúrate de guardar tu frase semilla. <br />
+                Es la llave a tus activos digitales.
+              </Text>
+              <Divider y={16} />
               <Link href='/settings/backup' brand='terciary' passHref>
                 Guardar frase semilla
               </Link>

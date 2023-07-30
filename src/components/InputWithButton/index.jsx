@@ -25,22 +25,20 @@ const Component = (props) => {
       if (isValid) {
         onClick(text);
         toast({
-          title: 'Perfecto',
-          description: 'La dirección de esta billetera es correcta',
+          description: 'Se ha pegado correctamente la billetera .',
           status: 'success',
           position: 'top',
-          duration: '2000',
+          duration: 2000,
           isClosable: true,
         });
       } else {
         toast({
-          description: 'La address parece ser incorrecta.',
           status: 'warning',
-          title: 'Error',
-          description: 'La dirección de esta billetera es incorrecta o inválida',
+          title: 'Tenemos un problema con la billetera.',
+          description: 'Parece ser que la billetera se ha copiado mal o es incorrecta.',
           status: 'error',
           position: 'top',
-          duration: '2000',
+          duration: 4000,
           isClosable: true,
         });
       }
