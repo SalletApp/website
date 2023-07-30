@@ -21,7 +21,13 @@ const Component = ({ onClose }) => {
   const handleCopyAddress = async () => {
     try {
       await navigator.clipboard.writeText(wallet?.address?.eth);
-      toast({ description: 'Address copiada', status: 'success' });
+      toast({
+        description: 'Billetera copiada correctamente.',
+        status: 'success',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
+      });
       onClose();
     } catch (err) {
       console.error('Failed to copy: ', err);
@@ -44,10 +50,10 @@ const Component = ({ onClose }) => {
           {wallet?.address?.eth && <QRCode value={wallet?.address?.eth} />}
         </Flex>
         <Container size='small'>
-          <Divider y={16} />
+          <Divider y={32} />
           <Flex flexDirection='column' alignItems='center' gap='20px'>
             <Flex w='100%' justifyContent='space-between' alignItems='center'>
-              <AddressBox title='Address' address={wallet?.address?.eth} />
+              <AddressBox title='Billetera' address={wallet?.address?.eth} />
               <div>
                 <Button size='small' type='bezeled' onClick={handleCopyAddress}>
                   Copiar
@@ -56,7 +62,7 @@ const Component = ({ onClose }) => {
             </Flex>
             {/* <Text align='center'>Lorem ipsum dolor sit amet consectetur adipisicing elit. </Text> */}
           </Flex>
-          <Divider y={16} />
+          <Divider y={32} />
         </Container>
       </ScreenView>
     </>

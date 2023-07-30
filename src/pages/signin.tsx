@@ -63,9 +63,10 @@ const Signup = () => {
     } else {
       toast({
         title: 'Contraseña incorrecta',
-        description: 'Las contraseñas no coinciden.',
+        description: 'Verifica que las contraseñas coincidan.',
         status: 'warning',
-        duration: 9000,
+        position: 'top',
+        duration: 2000,
         isClosable: true,
       });
     }
@@ -101,9 +102,10 @@ const Signup = () => {
     } else {
       toast({
         title: 'Contraseña incorrecta',
-        description: 'Las contraseñas no coinciden.',
+        description: 'Verifica que las contraseñas coincidan.',
         status: 'warning',
-        duration: 9000,
+        position: 'top',
+        duration: 2000,
         isClosable: true,
       });
 
@@ -129,13 +131,10 @@ const Signup = () => {
         <Container size='small'>
           {showMnemonic ? (
             <>
-              <Heading as='h2'>Frase semilla</Heading>
+              <Heading as='h2'>Ingresa la frase semilla</Heading>
               <Divider y={8} />
               <Text size='lg'>
-                Ingresa tu frase semilla o reutiliza alguna de otras wallets non-custodial.{' '}
-                <LinkBox color='#B3E0B8' textDecoration='underline'>
-                  Te gustaria conocer las alternativas?
-                </LinkBox>
+                Puedes ingresar con alguna generada gracias a Sallet o escribir alguna de otra billetera non-custodial.
               </Text>
               <Divider y={16} />
               {/* Mnemonic */}
@@ -143,7 +142,7 @@ const Signup = () => {
             </>
           ) : (
             <>
-              <Heading as='h2'>Contraseña</Heading>
+              <Heading as='h2'>Crea una contraseña.</Heading>
               <Divider y={8} />
               <Text size='lg'>
                 Si bien somos localfirst, necesitamos saber que eres realmente tu quien mueve fondos.
