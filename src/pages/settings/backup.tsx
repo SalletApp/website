@@ -153,7 +153,7 @@ const Backup = () => {
             )}
             {showMnemonic && showValidateMnemonic && (
               <Button brand='secondary' onClick={() => handleSubmit(localMnemonic)}>
-                Confirmar
+                Validar
               </Button>
             )}
           </Flex>
