@@ -42,6 +42,7 @@ export function AccountWrapper({ children }) {
   // Get new created data structure for localfirst
   useEffect(() => {
     if (!wallet && walletsDB && walletsDB?.length > 0) {
+      const itemDB = walletsDB[0];
       const decryptAccount = decrypt(itemDB?.account);
 
       if (itemDB) {
