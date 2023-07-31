@@ -54,19 +54,18 @@ export function AccountWrapper({ children }) {
         return;
       }
 
-      const decryptAccount = decrypt(itemDB?.account);
-
       if (itemDB) {
         setWallet({
           address: {
             eth: itemDB?.address?.eth,
           },
-          account: JSON.parse(decryptAccount),
+          account: JSON.parse(decrypt(itemDB?.account)),
           backup: itemDB?.backup,
         });
       }
 
       if (!signer) {
+        const decryptAccount = decrypt(itemDB?.account);
         const mnemonic = decrypt(JSON.parse(decryptAccount).seedPhrase).replaceAll('"', '');
         const walletAccount = ethers.Wallet.fromMnemonic(mnemonic);
 
@@ -80,25 +79,25 @@ export function AccountWrapper({ children }) {
   const createWallet = async (password) => {
     const walletETH = ethers.Wallet.createRandom();
     if (walletETH) {
-      const accountInstance = {
-        seedPhrase: encrypt(walletETH?.mnemonic?.phrase),
-        password: encrypt(password),
-      };
-
       try {
-        await db.wallets.add({
-          address: {
-            eth: walletETH?.address,
+        const accountInstance = {
+          seedPhrase: encrypt(walletETH?.mnemonic?.phrase),
+          password: encrypt(password),
+        };
+
+        setWallet({
+          address: { eth: walletETH?.address },
+          account: {
+            seedPhrase: encrypt(walletETH?.mnemonic?.phrase),
+            password: encrypt(password),
           },
-          account: encrypt(accountInstance),
           backup: false,
           version: 3,
         });
 
-        setWallet({
+        await db.wallets.add({
           address: { eth: walletETH?.address },
-          seedPhrase: encrypt(walletETH?.mnemonic?.phrase),
-          password: encrypt(password),
+          account: encrypt(accountInstance),
           backup: false,
           version: 3,
         });
