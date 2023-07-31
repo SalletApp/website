@@ -73,6 +73,8 @@ const Backup = () => {
     setLocalMnemonic(['', '', '', '', '', '', '', '', '', '', '', '']);
   };
 
+  if (!wallet) return;
+
   return (
     <>
       <Head>
