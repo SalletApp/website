@@ -35,12 +35,6 @@ const Backup = () => {
 
   const [localMnemonic, setLocalMnemonic] = useState(['', '', '', '', '', '', '', '', '', '', '', '']);
 
-  useEffect(() => {
-    if (mnemonic) {
-      setLocalMnemonic(mnemonic?.split(' '));
-    }
-  }, [mnemonic]);
-
   const handleChangeMnemonic = (value, index) => {
     let newMnemonic = localMnemonic;
     newMnemonic[index] = value;
@@ -123,7 +117,7 @@ const Backup = () => {
           {showMnemonic && !showValidateMnemonic && (
             <>
               <Divider y={16} />
-              <Mnemonic mnemonic={localMnemonic} readOnly={true} />
+              <Mnemonic mnemonic={mnemonic?.split(' ')} readOnly={true} />
               <Checkbox
                 size='lg'
                 width='100%'
