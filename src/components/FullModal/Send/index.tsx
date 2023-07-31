@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect } from 'react';
 import { Spinner, useToast } from '@chakra-ui/react';
+import { ethers } from 'ethers';
 
 import { useBlockchain } from 'src/context/Blockchain';
 import { useToken } from 'src/context/Token';
@@ -18,6 +19,7 @@ import Flex from 'src/components/Shared/Flex';
 import Input from 'src/components/Shared/Input';
 import Hr from 'src/components/Shared/Hr';
 import Divider from 'src/components/Shared/Divider';
+import QR from 'src/components/Icons/QR';
 
 import { cryptoToUSD } from 'src/hooks/usePrice';
 
@@ -27,6 +29,7 @@ import { getPrices } from 'src/pages/api/prices';
 import useKeyPress from 'src/hooks/useKeyPress';
 import useTruncatedAddress from 'src/hooks/useTruncatedAddress';
 import bigNumberTokenToString from 'src/hooks/useUtils';
+import { QRCodeScanner } from 'src/components/QRCodeScanner';
 
 const Component = ({ onClose }) => {
   // Chakra
@@ -51,6 +54,8 @@ const Component = ({ onClose }) => {
   // Price
   const [price, setPrice] = useState({ eth: 0, dai: 0 });
   const [gasPrice, setGasPrice] = useState();
+  const [addressIsValid, setAddressIsValid] = useState(false);
+  const [openReaderQR, setOpenReaderQR] = useState(false);
 
   useEffect(() => {
     // setLoading(true);
@@ -82,6 +87,16 @@ const Component = ({ onClose }) => {
     !gasPrice && !price.eth && !price.dai && init();
   }, [gasPrice, totalTokensUSD]);
 
+  useEffect(() => {
+    setToAddress(null);
+    setAddressIsValid(false);
+  }, []);
+
+  useEffect(() => {
+    const isValid = ethers.utils.isAddress(toAddress);
+    setAddressIsValid(isValid);
+  }, [toAddress]);
+
   // Send transaction
   const handleSendTransaction = async () => {
     setLoading(true);
@@ -98,8 +113,11 @@ const Component = ({ onClose }) => {
         setLoading(false);
         if (error?.code === 'INSUFFICIENT_FUNDS') {
           toast({
-            description: 'No tienes fondos suficientes',
+            title: 'Fondos insuficientes.',
+            description: 'No hemos detectado fondos en su cuenta y/o token.',
             status: 'warning',
+            position: 'top',
+            duration: 4000,
           });
         }
       }
@@ -122,7 +140,7 @@ const Component = ({ onClose }) => {
     if (enterPress) {
       switch (step) {
         case 'address':
-          toAddress && setStep('token');
+          toAddress !== null && toAddress !== '' && addressIsValid && setStep('token');
           break;
         case 'token':
           tokenSelected && setStep('amount');
@@ -144,6 +162,7 @@ const Component = ({ onClose }) => {
     setLoading(false);
     setTokenSelected('');
     setStep('address');
+    setOpenReaderQR(false);
     onClose();
   };
 
@@ -168,6 +187,32 @@ const Component = ({ onClose }) => {
     setMount(null);
   };
 
+  const continueToken = () => {
+    if (toAddress === null || toAddress === '') {
+      toast({
+        title: 'Advertencia',
+        description: 'El campo de texto está vacío',
+        status: 'warning',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+
+    if (!addressIsValid && toAddress !== null && toAddress !== '') {
+      toast({
+        title: 'Error',
+        description: 'La dirección de esta billetera es incorrecta o inválida',
+        status: 'error',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+
+    if (toAddress && addressIsValid) setStep('token');
+  };
+
   const handleShowSumary = async () => {
     setLoading(true);
     try {
@@ -180,25 +225,45 @@ const Component = ({ onClose }) => {
     }
   };
 
+  const handleShowReaderQR = () => {
+    setOpenReaderQR(!openReaderQR);
+  };
+
   return (
     <>
       <Navbar type='modal' title='Testeando' onClose={handleCloseModal} />
-      <ScreenView justifyContent='center'>
+      <ScreenView justifyContent={{ base: 'flex-start', md: 'center' }}>
         <Container size='small'>
+          <Divider y={32} />
           <Flex direction='column' gap='10px'>
             {/* Step Account */}
             {step === 'address' ? (
               <>
-                <InputWithButton
-                  placeholder='Address'
-                  value={toAddress}
-                  onChange={setToAddress}
-                  onClick={setToAddress}
-                  // autoFocus
+                <QRCodeScanner
+                  toAddress={toAddress}
+                  setToAddress={setToAddress}
+                  isOpen={openReaderQR}
+                  addressIsValid={addressIsValid}
+                  onClose={handleShowReaderQR}
                 />
+                <Flex gap={8}>
+                  <InputWithButton
+                    placeholder='Ingresa una billetera'
+                    value={toAddress}
+                    onChange={setToAddress}
+                    onClick={setToAddress}
+                    addressIsValid={addressIsValid}
+                    setAddressIsValid={setAddressIsValid}
+                  />
+                  <div>
+                    <Button type='bezeled' onClick={handleShowReaderQR}>
+                      <QR />
+                    </Button>
+                  </div>
+                </Flex>
                 <Divider y={16} />
                 <Text align='center'>
-                  Al enviar <strong>siempre verifica</strong> que las direcciones pertenecen al ecosistema de Ethereum.
+                  <strong>Verifica</strong> siempre los últimos 3 caracteres.
                 </Text>
               </>
             ) : (
@@ -223,7 +288,7 @@ const Component = ({ onClose }) => {
             {step === 'token' ? (
               <>
                 <Text size='large' isBold>
-                  Que deseas enviar
+                  ¿Qué deseas enviar?
                 </Text>
                 <Divider y={16} />
                 <Token
@@ -267,7 +332,7 @@ const Component = ({ onClose }) => {
             {step === 'amount' ? (
               <>
                 <Text size='large' isBold>
-                  Cuanto deseas enviar
+                  ¿Cuánto deseas enviar?
                 </Text>
                 <Divider y={16} />
                 <Flex gap={8}>
@@ -287,7 +352,7 @@ const Component = ({ onClose }) => {
                   {/* <InputWithToken value={mount} onChange={(e) => setMount(e.target.value)} /> */}
                 </Flex>
                 <Divider y={8} />
-                <Flex justify='center'>
+                <Flex justify='center' gap={4}>
                   <Text>Disponible: </Text>
                   <Text isBold>${Number(totalTokensUSD[tokenSelected]).toFixed(2)}</Text>
                 </Flex>
@@ -326,6 +391,7 @@ const Component = ({ onClose }) => {
               )
             )}
           </Flex>
+          <Divider y={32} />
         </Container>
       </ScreenView>
 
@@ -337,7 +403,7 @@ const Component = ({ onClose }) => {
               Cancelar
             </Button>
             {step === 'address' && (
-              <Button onClick={() => toAddress && setStep('token')} isDisabled={!toAddress}>
+              <Button onClick={continueToken} isDisabled={!toAddress}>
                 {loading ? <Spinner /> : 'Continuar'}
               </Button>
             )}
@@ -349,7 +415,9 @@ const Component = ({ onClose }) => {
             {step === 'amount' && (
               <Button
                 onClick={handleShowSumary}
-                isDisabled={!mount || mount === '0' || mount === '0.' || mount === '.' || mount === ','}
+                isDisabled={
+                  !mount || mount === '0' || mount === '0.' || mount === '.' || mount === ',' || !addressIsValid
+                }
               >
                 {loading ? <Spinner /> : 'Continuar'}
               </Button>

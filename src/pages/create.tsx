@@ -82,7 +82,7 @@ const Create = () => {
     } else {
       toast({
         title: 'Contraseña incorrecta',
-        description: 'Las contraseñas no coinciden.',
+        description: 'Verifica que las contraseñas coincidan.',
         status: 'warning',
         duration: 9000,
         isClosable: true,
@@ -111,15 +111,15 @@ const Create = () => {
           <Container size='small'>
             <Flex flexDirection={'column'} justifyContent={{ base: 'space-between', md: 'center' }} gap={4}>
               <Flex direction='column'>
-                <Heading as='h2'>Cree una contraseña</Heading>
+                <Heading as='h2'>Creemos una contraseña.</Heading>
                 <Divider y={8} />
                 <Text>
-                  Si bien toda información queda almacenada en su dispositivo, necesitamos un método de seguridad mínimo
-                  para manejar sus fondos.
+                  Si bien funcionamos únicamente en tu dispositivo, necesitamos validar que realmente eres tú al momento
+                  de ingresar.
                 </Text>
                 <Divider y={16} />
                 <Input
-                  placeholder='Escriba su contraseña'
+                  placeholder='Escribe una contraseña'
                   value={password}
                   onChange={handleSetPassword}
                   name='password'
@@ -128,7 +128,7 @@ const Create = () => {
                 />
                 <Divider y={8} />
                 <Input
-                  placeholder='Verifique su contraseña'
+                  placeholder='Verifique la contraseña'
                   value={validatePassword}
                   onChange={handleSetValidatePass}
                   disabled={!showValidate}
@@ -146,7 +146,7 @@ const Create = () => {
           <Divider y={16} />
           <Flex direction={{ base: 'column-reverse', md: 'row' }} justify={'center'} gap={8}>
             <Link type='bezeledGray' href='/' passHref>
-              Cancelar
+              Volver
             </Link>
             <Button variant='solid' isDisabled={!isValid || loading} onClick={handleConfirm}>
               {loading ? <Spinner /> : 'Crear'}
