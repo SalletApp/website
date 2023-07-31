@@ -50,13 +50,12 @@ export function AccountWrapper({ children }) {
           address: {
             eth: itemDB?.address?.eth,
           },
-          account: JSON.parse(decrypt(itemDB?.account)),
+          account: JSON.parse(decryptAccount),
           backup: itemDB?.backup,
         });
       }
 
       if (!signer) {
-        const decryptAccount = decrypt(itemDB?.account);
         const mnemonic = decrypt(JSON.parse(decryptAccount).seedPhrase).replaceAll('"', '');
         const walletAccount = ethers.Wallet.fromMnemonic(mnemonic);
 
