@@ -249,7 +249,7 @@ const Component = ({ onClose }) => {
                 />
                 <Flex gap={8}>
                   <InputWithButton
-                    placeholder='Address'
+                    placeholder='Ingresa una billetera'
                     value={toAddress}
                     onChange={setToAddress}
                     onClick={setToAddress}
