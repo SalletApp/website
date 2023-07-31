@@ -194,7 +194,7 @@ const Component = ({ onClose }) => {
         description: 'El campo de texto está vacío',
         status: 'warning',
         position: 'top',
-        duration: 200,
+        duration: 2000,
         isClosable: true,
       });
     }
@@ -205,7 +205,7 @@ const Component = ({ onClose }) => {
         description: 'La dirección de esta billetera es incorrecta o inválida',
         status: 'error',
         position: 'top',
-        duration: 200,
+        duration: 2000,
         isClosable: true,
       });
     }
@@ -239,7 +239,6 @@ const Component = ({ onClose }) => {
             {/* Step Account */}
             {step === 'address' ? (
               <>
-                {' '}
                 <QRCodeScanner
                   toAddress={toAddress}
                   setToAddress={setToAddress}
