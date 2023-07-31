@@ -1,24 +1,14 @@
 ## 🍁 Branches
 
-- `master` is our main branch for production build
+- `main` is our main branch for production build
 - `dev` is the branch that we use for everyday coding. It's where we merge the development branchs.
-- Please **Do Not develop directly** on `master` branch
-- Merges to `master` should be through `pull request` practice **and always ask to team leaer**
+- Please **Do Not develop directly** on `main` branch
+- Merges to `main` should be through `pull request` practice **and always ask to team leaer**
 
 ## Merge Requests
 
 - 👁 Focus on one task at time
 - ⚛️ Make atomic/little commits
-
-## 🗃 File and Folders naming 
-
-The name of the `files` and `folders` must be written in English and with the same rules:
- - Components, screens and layouts is written following the pattern
-`TitleCase` , ex: `MoodTracker.tsx.`
- - The rest of the files are written following the pattern
-`camelCase` , Ex: `habitsService.js`
- - The folders name has to be written following the pattern
- `TitleCase` , Ex: `DiaryComponents`
  
  ## Commits
 
