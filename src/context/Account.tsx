@@ -41,31 +41,20 @@ export function AccountWrapper({ children }) {
 
   // Get new created data structure for localfirst
   useEffect(() => {
-    // Remove old structure
-    async function removeOldStructure() {
-      await db.wallets.delete(1);
-      push('/');
-    }
-
     if (!wallet && walletsDB && walletsDB?.length > 0) {
-      const itemDB = walletsDB[0];
-      if (itemDB?.wallet) {
-        removeOldStructure();
-        return;
-      }
+      const decryptAccount = decrypt(itemDB?.account);
 
       if (itemDB) {
         setWallet({
           address: {
             eth: itemDB?.address?.eth,
           },
-          account: JSON.parse(decrypt(itemDB?.account)),
+          account: JSON.parse(decryptAccount),
           backup: itemDB?.backup,
         });
       }
 
       if (!signer) {
-        const decryptAccount = decrypt(itemDB?.account);
         const mnemonic = decrypt(JSON.parse(decryptAccount).seedPhrase).replaceAll('"', '');
         const walletAccount = ethers.Wallet.fromMnemonic(mnemonic);
 
