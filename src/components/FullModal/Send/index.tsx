@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect } from 'react';
 import { Spinner, useToast } from '@chakra-ui/react';
+import { ethers } from 'ethers';
 
 import { useBlockchain } from 'src/context/Blockchain';
 import { useToken } from 'src/context/Token';
@@ -18,6 +19,7 @@ import Flex from 'src/components/Shared/Flex';
 import Input from 'src/components/Shared/Input';
 import Hr from 'src/components/Shared/Hr';
 import Divider from 'src/components/Shared/Divider';
+import QR from 'src/components/Icons/QR';
 
 import { cryptoToUSD } from 'src/hooks/usePrice';
 
@@ -27,6 +29,7 @@ import { getPrices } from 'src/pages/api/prices';
 import useKeyPress from 'src/hooks/useKeyPress';
 import useTruncatedAddress from 'src/hooks/useTruncatedAddress';
 import bigNumberTokenToString from 'src/hooks/useUtils';
+import { QRCodeScanner } from 'src/components/QRCodeScanner';
 
 const Component = ({ onClose }) => {
   // Chakra
@@ -52,6 +55,7 @@ const Component = ({ onClose }) => {
   const [price, setPrice] = useState({ eth: 0, dai: 0 });
   const [gasPrice, setGasPrice] = useState();
   const [addressIsValid, setAddressIsValid] = useState(false);
+  const [openReaderQR, setOpenReaderQR] = useState(false);
 
   useEffect(() => {
     // setLoading(true);
@@ -87,6 +91,11 @@ const Component = ({ onClose }) => {
     setToAddress(null);
     setAddressIsValid(false);
   }, []);
+
+  useEffect(() => {
+    const isValid = ethers.utils.isAddress(toAddress);
+    setAddressIsValid(isValid);
+  }, [toAddress]);
 
   // Send transaction
   const handleSendTransaction = async () => {
@@ -153,6 +162,7 @@ const Component = ({ onClose }) => {
     setLoading(false);
     setTokenSelected('');
     setStep('address');
+    setOpenReaderQR(false);
     onClose();
   };
 
@@ -184,7 +194,7 @@ const Component = ({ onClose }) => {
         description: 'El campo de texto está vacío',
         status: 'warning',
         position: 'top',
-        duration: '2000',
+        duration: 2000,
         isClosable: true,
       });
     }
@@ -195,7 +205,7 @@ const Component = ({ onClose }) => {
         description: 'La dirección de esta billetera es incorrecta o inválida',
         status: 'error',
         position: 'top',
-        duration: '2000',
+        duration: 2000,
         isClosable: true,
       });
     }
@@ -215,6 +225,10 @@ const Component = ({ onClose }) => {
     }
   };
 
+  const handleShowReaderQR = () => {
+    setOpenReaderQR(!openReaderQR);
+  };
+
   return (
     <>
       <Navbar type='modal' title='Testeando' onClose={handleCloseModal} />
@@ -225,14 +239,28 @@ const Component = ({ onClose }) => {
             {/* Step Account */}
             {step === 'address' ? (
               <>
-                <InputWithButton
-                  placeholder='Billetera'
-                  value={toAddress}
-                  onChange={setToAddress}
-                  onClick={setToAddress}
+                <QRCodeScanner
+                  toAddress={toAddress}
+                  setToAddress={setToAddress}
+                  isOpen={openReaderQR}
                   addressIsValid={addressIsValid}
-                  setAddressIsValid={setAddressIsValid}
+                  onClose={handleShowReaderQR}
                 />
+                <Flex gap={8}>
+                  <InputWithButton
+                    placeholder='Ingresa una billetera'
+                    value={toAddress}
+                    onChange={setToAddress}
+                    onClick={setToAddress}
+                    addressIsValid={addressIsValid}
+                    setAddressIsValid={setAddressIsValid}
+                  />
+                  <div>
+                    <Button type='bezeled' onClick={handleShowReaderQR}>
+                      <QR />
+                    </Button>
+                  </div>
+                </Flex>
                 <Divider y={16} />
                 <Text align='center'>
                   <strong>Verifica</strong> siempre los últimos 3 caracteres.
