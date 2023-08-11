@@ -68,7 +68,7 @@ const Dashboard = () => {
         <title>Wallet - Sallet</title>
       </Head>
       <Navbar type={openModal ? 'modal' : 'page'} title={typeModal || ''} onClose={handleCloseFullModal} />
-      <ScreenView justifyContent={{ base: 'start', md: 'center' }}>
+      <ScreenView justifyContent='center'>
         <Container size='small'>
           <Divider y={32} />
           {/* Balance */}
