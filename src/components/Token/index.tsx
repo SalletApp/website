@@ -43,7 +43,6 @@ const icons = {
 const Component = (props) => {
   const { name, token, price, onClick, active = false, readOnly = false } = props;
 
-  const valueToken = Number(price);
   const amountToken = Number(bigNumberTokenToString(token)).toFixed(listTokens[name]?.decimal);
 
   const style = {
@@ -77,7 +76,7 @@ const Component = (props) => {
         </Flex>
       </Flex>
       <Flex direction='column' align='flex-end' flex={1}>
-        <Text isBold>${formatAmountNumber(valueToken)}</Text>
+        <Text isBold>${formatAmountNumber(Number(amountToken))}</Text>
         <Text size='small'>{formatAmountNumber(Number(amountToken))}</Text>
       </Flex>
     </Box>

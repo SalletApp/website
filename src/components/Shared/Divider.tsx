@@ -7,7 +7,7 @@ interface DividerProps {
 }
 
 const Component: React.FunctionComponent<DividerProps> = ({ y = 0, x = 0 }) => {
-  return <Box bg='red' margin={`${y / 2}px ${x / 2}px`} />;
+  return <Box margin={`${y / 2}px ${x / 2}px`} />;
 };
 
 export default Component;
