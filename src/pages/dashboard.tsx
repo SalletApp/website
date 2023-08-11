@@ -1,29 +1,29 @@
-import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { Text as TextDemo } from '@chakra-ui/react';
-import { ArrowDown, ArrowUp } from 'react-feather';
+import { useState, useEffect } from "react";
+import Head from "next/head";
+import { Text as TextDemo } from "@chakra-ui/react";
+import { ArrowDown, ArrowUp } from "react-feather";
 
-import { useAccount } from '../context/Account';
-import { useToken } from '../context/Token';
+import { useAccount } from "../context/Account";
+import { useToken } from "../context/Token";
 
-import Text from '../components/Shared/Text';
-import ButtonCircle from '../components/Shared/ButtonCircle';
-import Link from '../components/Shared/Link';
+import Text from "../components/Shared/Text";
+import ButtonCircle from "../components/Shared/ButtonCircle";
+import Link from "../components/Shared/Link";
 
-import Navbar from 'src/components/Layout/Navbar';
-import Container from 'src/components/Layout/Container';
-import ScreenView from 'src/components/Layout/ScreenView';
-import FullModal from 'src/components/FullModal';
-import Flex from 'src/components/Shared/Flex';
-import Divider from 'src/components/Shared/Divider';
-import Button from 'src/components/Shared/Button';
+import Navbar from "src/components/Layout/Navbar";
+import Container from "src/components/Layout/Container";
+import ScreenView from "src/components/Layout/ScreenView";
+import FullModal from "src/components/FullModal";
+import Flex from "src/components/Shared/Flex";
+import Divider from "src/components/Shared/Divider";
+import Button from "src/components/Shared/Button";
 
-import Token from '../components/Token';
+import Token from "../components/Token";
 
-import { cryptoToUSD, formatPrice } from '../hooks/usePrice';
+import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
 
 // import { getPrice } from './api/thegraph';
-import { getPrices } from './api/prices';
+import { getPrices } from "./api/prices";
 
 export async function getStaticProps() {
   const { success, data } = await getPrices();
@@ -32,8 +32,8 @@ export async function getStaticProps() {
     return {
       props: {
         price: {
-          eth: data.find((token) => token.name === 'eth'),
-          dai: data.find((token) => token.name === 'dai'),
+          eth: data.find((token) => token.name === "eth"),
+          dai: data.find((token) => token.name === "dai"),
         },
       },
     };
@@ -47,9 +47,9 @@ const Dashboard = ({ price }) => {
   if (!tokens) return null;
 
   // General
-  const [modalType, setModalType] = useState('');
+  const [modalType, setModalType] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const [typeModal, setTypeModal] = useState('');
+  const [typeModal, setTypeModal] = useState("");
 
   const handleOpenFullModal = (type) => {
     setTypeModal(type);
@@ -59,31 +59,42 @@ const Dashboard = ({ price }) => {
 
   const handleCloseFullModal = () => {
     setOpenModal(false);
-    setModalType('');
+    setModalType("");
   };
+
+  useEffect(() => {
+    if (wallet?.showOnboarding) {
+      setModalType("onboarding");
+      setOpenModal(true);
+    }
+  }, [wallet]);
 
   return (
     <>
       <Head>
         <title>Wallet - Sallet</title>
       </Head>
-      <Navbar type={openModal ? 'modal' : 'page'} title={typeModal || ''} onClose={handleCloseFullModal} />
-      <ScreenView justifyContent='center'>
-        <Container size='small'>
+      <Navbar
+        type={openModal ? "modal" : "page"}
+        title={typeModal || ""}
+        onClose={handleCloseFullModal}
+      />
+      <ScreenView justifyContent="center">
+        <Container size="small">
           <Divider y={32} />
           {/* Balance */}
-          <Flex direction='column' align='center'>
-            <Flex justify='center' align='center' gap={8}>
-              <Text size='small'>Balance</Text>
+          <Flex direction="column" align="center">
+            <Flex justify="center" align="center" gap={8}>
+              <Text size="small">Balance</Text>
               {/* POC */}
               <TextDemo
-                bg='terciary15'
-                color='terciary'
-                p='4px 12px'
+                bg="terciary15"
+                color="terciary"
+                p="4px 12px"
                 borderRadius={99}
-                fontSize='12px'
-                fontWeight={'bold'}
-                textTransform={'uppercase'}
+                fontSize="12px"
+                fontWeight={"bold"}
+                textTransform={"uppercase"}
               >
                 Testnet
               </TextDemo>
@@ -93,9 +104,10 @@ const Dashboard = ({ price }) => {
               $
               {formatPrice(
                 Number(
-                  cryptoToUSD(price?.eth?.values?.bid, tokens?.eth) + cryptoToUSD(price?.dai?.values?.bid, tokens?.dai),
+                  cryptoToUSD(price?.eth?.values?.bid, tokens?.eth) +
+                    cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)
                 ).toFixed(2),
-                2,
+                2
               )}
             </Text>
           </Flex>
@@ -103,25 +115,42 @@ const Dashboard = ({ price }) => {
           <Divider y={32} />
 
           {/* Botones */}
-          <Flex justify='center'>
-            <ButtonCircle brand='secondary' onClick={() => handleOpenFullModal('send')} title='Enviar'>
-              <ArrowUp color='#111' />
+          <Flex justify="center">
+            <ButtonCircle
+              brand="secondary"
+              onClick={() => handleOpenFullModal("send")}
+              title="Enviar"
+            >
+              <ArrowUp color="#111" />
             </ButtonCircle>
             <Divider x={16} />
-            <ButtonCircle onClick={() => handleOpenFullModal('receive')} title='Recibir'>
-              <ArrowDown color='#111' />
+            <ButtonCircle
+              onClick={() => handleOpenFullModal("receive")}
+              title="Recibir"
+            >
+              <ArrowDown color="#111" />
             </ButtonCircle>
           </Flex>
 
           <Divider y={32} />
 
           {/* Tokens */}
-          <Token name='eth' token={tokens?.eth} price={cryptoToUSD(price?.eth?.values?.bid, tokens?.eth)} readOnly />
-          <Token name='dai' token={tokens?.dai} price={cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)} readOnly />
+          <Token
+            name="eth"
+            token={tokens?.eth}
+            price={cryptoToUSD(price?.eth?.values?.bid, tokens?.eth)}
+            readOnly
+          />
+          <Token
+            name="dai"
+            token={tokens?.dai}
+            price={cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)}
+            readOnly
+          />
 
           <Divider y={16} />
           <Flex>
-            <Button isBlock type='bezeledGray'>
+            <Button isBlock type="bezeledGray">
               Ver historial
             </Button>
           </Flex>
@@ -131,20 +160,20 @@ const Dashboard = ({ price }) => {
 
       {/* Security */}
       {wallet && !wallet?.backup && (
-        <Flex background='terciary15'>
+        <Flex background="terciary15">
           <Container>
             <Divider y={16} />
             <Flex
-              direction={{ base: 'column', md: 'row' }}
-              align='center'
-              justify={{ base: 'center', md: 'space-between' }}
+              direction={{ base: "column", md: "row" }}
+              align="center"
+              justify={{ base: "center", md: "space-between" }}
             >
-              <Text align={{ base: 'center', md: 'left' }}>
+              <Text align={{ base: "center", md: "left" }}>
                 Asegúrate de guardar tu frase semilla. <br />
                 Es la llave a tus activos digitales.
               </Text>
               <Divider y={16} />
-              <Link href='/settings/backup' brand='terciary' passHref>
+              <Link href="/settings/backup" brand="terciary" passHref>
                 Guardar frase semilla
               </Link>
             </Flex>
@@ -153,7 +182,11 @@ const Dashboard = ({ price }) => {
         </Flex>
       )}
 
-      <FullModal type={modalType} open={openModal} onClose={() => setOpenModal(false)} />
+      <FullModal
+        type={modalType}
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      />
     </>
   );
 };
