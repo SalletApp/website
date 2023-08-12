@@ -3,6 +3,7 @@ import { VStack } from "@chakra-ui/react";
 
 import useKeyPress from "src/hooks/useKeyPress";
 
+import InitialOnboarding from "./InitialOnboarding";
 import Receive from "./Receive";
 import Send from "./Send";
 
@@ -37,7 +38,8 @@ const Component = (props) => {
     <VStack position="fixed" {...fullModalStyle}>
       {type && (
         <VStack {...modalStyle} gap={0}>
-          {type === "onboarding" && <Receive onClose={onClose} />}
+          {type === "onboarding" && <InitialOnboarding onClose={onClose} />}
+          {type === "receive" && <Receive onClose={onClose} />}
           {type === "send" && <Send onClose={onClose} />}
         </VStack>
       )}
