@@ -5,11 +5,45 @@ import Flex from 'src/components/Shared/Flex';
 
 import IconETH from 'src/components/Icons/ETH';
 import IconDAI from 'src/components/Icons/DAI';
+import IconNARS from 'src/components/IconsFlag/ARG';
 
 import bigNumberTokenToString from 'src/hooks/useUtils';
+import formatAmountNumber from 'src/lib/formatAmountNumber';
+
+const listTokens = {
+  eth: {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    icon: <IconETH />,
+    typeToken: true,
+    decimal: 4,
+  },
+  dai: {
+    name: 'DAI',
+    symbol: 'DAI',
+    icon: <IconDAI />,
+    typeToken: true,
+    decimal: 2,
+  },
+  nars: {
+    name: 'Peso Argentino',
+    symbol: 'nARS',
+    icon: <IconNARS />,
+    typeToken: false,
+    decimal: 2,
+  },
+};
+
+const icons = {
+  eth: IconETH,
+  dai: IconDAI,
+  nars: IconNARS,
+};
 
 const Component = (props) => {
   const { name, token, price, onClick, active = false, readOnly = false } = props;
+
+  const amountToken = Number(bigNumberTokenToString(token)).toFixed(listTokens[name]?.decimal);
 
   const style = {
     display: 'flex',
@@ -35,12 +69,15 @@ const Component = (props) => {
   return (
     <Box {...style} onClick={() => !readOnly && onClick(name)} tabIndex={readOnly ? -1 : 1}>
       <Flex align='center' gap={8}>
-        {name === 'eth' ? <IconETH /> : <IconDAI />}
-        <Text fontWeight='bold'>{name.toUpperCase()}</Text>
+        {listTokens[name]?.icon}
+        <Flex direction='column'>
+          <Text fontWeight='bold'>{listTokens[name]?.name}</Text>
+          <Text size='small'>{listTokens[name]?.symbol}</Text>
+        </Flex>
       </Flex>
-      <Flex direction='column' align='flex-end'>
-        <Text isBold>${Number(price).toFixed(2)}</Text>
-        <Text size='small'>{Number(bigNumberTokenToString(token)).toFixed(4) || '0.00'}</Text>
+      <Flex direction='column' align='flex-end' flex={1}>
+        <Text isBold>${formatAmountNumber(Number(amountToken))}</Text>
+        <Text size='small'>{formatAmountNumber(Number(amountToken))}</Text>
       </Flex>
     </Box>
   );

@@ -24,23 +24,23 @@ import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
 
 // import { getPrice } from './api/thegraph';
 import { getPrices } from "./api/prices";
+import bigNumberTokenToString from "src/hooks/useUtils";
+import formatAmountNumber from "src/lib/formatAmountNumber";
 
 export async function getStaticProps() {
-  const { success, data } = await getPrices();
+  // const { success, data } = await getPrices();
 
-  if (success) {
-    return {
-      props: {
-        price: {
-          eth: data.find((token) => token.name === "eth"),
-          dai: data.find((token) => token.name === "dai"),
-        },
-      },
-    };
-  }
+  return {
+    props: {
+      // price: {
+      //   eth: data.find((token) => token.name === 'eth'),
+      //   dai: data.find((token) => token.name === 'dai'),
+      // },
+    },
+  };
 }
 
-const Dashboard = ({ price }) => {
+const Dashboard = () => {
   const { wallet } = useAccount();
   const { tokens } = useToken();
 
@@ -84,31 +84,24 @@ const Dashboard = ({ price }) => {
           <Divider y={32} />
           {/* Balance */}
           <Flex direction="column" align="center">
-            <Flex justify="center" align="center" gap={8}>
-              <Text size="small">Balance</Text>
+            <Flex direction="column" justify="center" align="center" gap={8}>
               {/* POC */}
               <TextDemo
                 bg="terciary15"
                 color="terciary"
                 p="4px 12px"
                 borderRadius={99}
-                fontSize="12px"
+                fontSize="14px"
                 fontWeight={"bold"}
-                textTransform={"uppercase"}
               >
-                Testnet
+                LaTestnet
               </TextDemo>
+              <Text size="small">Balance</Text>
             </Flex>
             <Divider y={16} />
             <Text fontSize={32} isBold>
               $
-              {formatPrice(
-                Number(
-                  cryptoToUSD(price?.eth?.values?.bid, tokens?.eth) +
-                    cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)
-                ).toFixed(2),
-                2
-              )}
+              {formatAmountNumber(Number(bigNumberTokenToString(tokens?.nars)))}
             </Text>
           </Flex>
 
@@ -135,19 +128,14 @@ const Dashboard = ({ price }) => {
           <Divider y={32} />
 
           {/* Tokens */}
+          <Text isBold>Tokens</Text>
+          <Divider y={8} />
           <Token
-            name="eth"
-            token={tokens?.eth}
-            price={cryptoToUSD(price?.eth?.values?.bid, tokens?.eth)}
+            name="nars"
+            token={tokens?.nars}
+            price={tokens?.nars}
             readOnly
           />
-          <Token
-            name="dai"
-            token={tokens?.dai}
-            price={cryptoToUSD(price?.dai?.values?.bid, tokens?.dai)}
-            readOnly
-          />
-
           <Divider y={16} />
           <Flex>
             <Button isBlock type="bezeledGray">
