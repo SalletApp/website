@@ -1,12 +1,12 @@
-import React, { ReactElement, useState } from "react";
-import { ArrowLeft, ArrowRight } from "react-feather";
+import React, { ReactElement, useState } from 'react';
+import { ArrowLeft, ArrowRight } from 'react-feather';
 
-import styles from "./Carousel.module.css";
+import styles from './Carousel.module.css';
 
-import { Container } from "../Container";
-import Button from "../Shared/Button";
-import Divider from "../Shared/Divider";
-import Flex from "../Shared/Flex";
+import Container from 'src/components/Layout/Container';
+import Button from 'src/components/Shared/Button';
+import Divider from 'src/components/Shared/Divider';
+import Flex from 'src/components/Shared/Flex';
 
 interface CarouselProps {
   slides: Array<ReactElement>;
@@ -21,8 +21,7 @@ const Carousel: React.FC<CarouselProps> = ({ slides, onFinish }) => {
   };
 
   const nextSlide = () => {
-    let idx =
-      currentSlide + 1 === slides.length ? currentSlide : currentSlide + 1;
+    let idx = currentSlide + 1 === slides.length ? currentSlide : currentSlide + 1;
 
     if (idx === currentSlide) {
       onFinish();
@@ -37,68 +36,47 @@ const Carousel: React.FC<CarouselProps> = ({ slides, onFinish }) => {
   };
 
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.carousel}>
-          {slides.map((slide, index) => (
-            <div
-              key={index}
-              className={`${
-                index === currentSlide ? styles.slideActive : styles.slide
-              }`}
-            >
-              {slide}
-            </div>
-          ))}
-        </div>
-        <div
-          className={styles.chipsContainer}
-          style={{ justifyContent: !onFinish ? "space-between" : "center" }}
-        >
-          {!onFinish && (
-            <ArrowLeft onClick={prevSlide} className={styles.arrow} />
-          )}
-          <div className={styles.chips}>
+    <Flex direction='column' justify='space-between' style={{ height: '100%' }}>
+      <Container size='small' height='100%'>
+        {slides.map((slide, index) => (
+          <div key={index} className={`${index === currentSlide ? styles.slideActive : styles.slide}`}>
+            {slide}
+          </div>
+        ))}
+        <Divider y={16} />
+        <Flex align='center' justify='center'>
+          {!onFinish && <ArrowLeft onClick={prevSlide} className={styles.arrow} />}
+          <Flex justify='center' gap={8}>
             {slides.map((_, index) => (
               <div
                 key={index}
-                className={`${styles.chip} ${
-                  index === currentSlide ? styles.chipActive : styles.chip
-                }`}
+                className={`${styles.chip} ${index === currentSlide ? styles.chipActive : styles.chip}`}
                 onClick={() => goToSlide(index)}
               />
             ))}
-          </div>
-          {!onFinish && (
-            <ArrowRight onClick={nextSlide} className={styles.arrow} />
-          )}
-        </div>
-      </div>
-      <Divider y={26} />
+          </Flex>
+          {!onFinish && <ArrowRight onClick={nextSlide} className={styles.arrow} />}
+        </Flex>
+        <Divider y={16} />
+      </Container>
       {onFinish && (
-        <Flex background="gray5">
+        <Flex background='gray5'>
           <Container>
             <Divider y={16} />
-            <Flex
-              direction={{ base: "column-reverse", md: "row" }}
-              justify={"center"}
-              gap={8}
-            >
-              <Button
-                type="bezeledGray"
-                onClick={prevSlide}
-                isDisabled={currentSlide - 1 < 0}
-              >
+            <Flex direction={{ base: 'column-reverse', md: 'row' }} justify={'center'} gap={8}>
+              <Button type='bezeledGray' onClick={prevSlide} isDisabled={currentSlide - 1 < 0}>
                 Anterior
               </Button>
 
-              <Button onClick={nextSlide}>Continuar</Button>
+              <Button onClick={nextSlide} brand={currentSlide + 1 === slides.length ? 'secondary' : 'primary'}>
+                {currentSlide + 1 === slides.length ? 'Finalizar' : 'Continuar'}
+              </Button>
             </Flex>
             <Divider y={16} />
           </Container>
         </Flex>
       )}
-    </>
+    </Flex>
   );
 };
 
