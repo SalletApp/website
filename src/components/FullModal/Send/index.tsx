@@ -30,21 +30,24 @@ import useKeyPress from 'src/hooks/useKeyPress';
 import useTruncatedAddress from 'src/hooks/useTruncatedAddress';
 import bigNumberTokenToString from 'src/hooks/useUtils';
 import { QRCodeScanner } from 'src/components/QRCodeScanner';
+import formatAmountNumber from 'src/lib/formatAmountNumber';
+
+const listTokens = {
+  nars: {
+    name: 'nARS',
+  },
+};
 
 const Component = ({ onClose }) => {
   // Chakra
   const toast = useToast();
 
   // Context
-  const { getGasPrice, kovanProvider } = useBlockchain();
-  const { sendTransaction, tokens, providerDAI } = useToken();
+  const { getGasPrice } = useBlockchain();
+  const { sendTransaction, tokens } = useToken();
 
   // Tokens
   const [tokenSelected, setTokenSelected] = useState(null);
-  const [totalTokensUSD, setTotalTokensUSD] = useState({
-    eth: 0.0,
-    dai: 0.0,
-  });
 
   // Component
   const [loading, setLoading] = useState(false);
@@ -52,7 +55,6 @@ const Component = ({ onClose }) => {
   const [mount, setMount] = useState(null);
 
   // Price
-  const [price, setPrice] = useState({ eth: 0, dai: 0 });
   const [gasPrice, setGasPrice] = useState();
   const [addressIsValid, setAddressIsValid] = useState(false);
   const [openReaderQR, setOpenReaderQR] = useState(false);
@@ -62,30 +64,25 @@ const Component = ({ onClose }) => {
     async function init() {
       try {
         const gasPrice = await getGasPrice();
-        const { success, data } = await getPrices();
 
-        if (success) {
-          const prices = {
-            eth: data.find((token) => token.name === 'eth'),
-            dai: data.find((token) => token.name === 'dai'),
-          };
-
-          setGasPrice(gasPrice);
-          setPrice({ eth: prices?.eth?.values?.bid, dai: prices?.dai?.values?.bid });
-          // setPriceETH(eth?.usd);
-
-          setTotalTokensUSD({
-            eth: cryptoToUSD(prices?.eth?.values?.bid, tokens.eth),
-            dai: cryptoToUSD(prices?.dai?.values?.bid, tokens.dai),
-          });
-        }
+        setGasPrice(gasPrice);
       } catch (error) {
         console.log('err', error);
       }
     }
 
-    !gasPrice && !price.eth && !price.dai && init();
-  }, [gasPrice, totalTokensUSD]);
+    !gasPrice && init();
+  }, [gasPrice]);
+
+  useEffect(() => {
+    setToAddress(null);
+    setAddressIsValid(false);
+  }, []);
+
+  useEffect(() => {
+    const isValid = ethers.utils.isAddress(toAddress);
+    setAddressIsValid(isValid);
+  }, [toAddress]);
 
   useEffect(() => {
     setToAddress(null);
@@ -101,12 +98,10 @@ const Component = ({ onClose }) => {
   const handleSendTransaction = async () => {
     setLoading(true);
 
-    const mountToToken = (Number(mount) * price.dai) / price[tokenSelected];
-
     if (toAddress && mount) {
-      const { success, error } = await sendTransaction(toAddress, mountToToken, tokenSelected);
+      const { success, error } = await sendTransaction(toAddress, mount, tokenSelected);
       if (success) {
-        toast({ description: 'Transacción enviada', status: 'success' });
+        toast({ description: 'Transacción enviada', status: 'success', position: 'top', duration: 2000 });
         setLoading(false);
         handleCloseModal();
       } else {
@@ -292,21 +287,12 @@ const Component = ({ onClose }) => {
                 </Text>
                 <Divider y={16} />
                 <Token
-                  name='eth'
-                  token={tokens?.eth}
-                  price={totalTokensUSD?.eth}
+                  name='nars'
+                  token={tokens?.nars}
+                  price={1}
                   disabled={!toAddress}
                   onClick={setTokenSelected}
-                  active={tokenSelected === 'eth'}
-                />
-                <Divider y={8} />
-                <Token
-                  name='dai'
-                  token={tokens?.dai}
-                  price={totalTokensUSD?.dai}
-                  disabled={!toAddress}
-                  onClick={setTokenSelected}
-                  active={tokenSelected === 'dai'}
+                  active={tokenSelected === 'nars'}
                 />
               </>
             ) : (
@@ -315,7 +301,7 @@ const Component = ({ onClose }) => {
                   <Flex justify='space-between'>
                     <Text size='small'>Token</Text>
                     <Flex justify='end' align='center' gap={8}>
-                      <Text isBold>{tokenSelected.toUpperCase()}</Text>
+                      {tokenSelected && <Text isBold>{listTokens[tokenSelected]?.name}</Text>}
 
                       <div>
                         <Button size='small' type='bezeled' onClick={handleChangeToken}>
@@ -345,7 +331,7 @@ const Component = ({ onClose }) => {
                     type='number'
                     autoFocus
                     placeholder='0.00'
-                    iconLeft={'USD'}
+                    iconLeft={'ARS'}
                     value={mount}
                     onChange={(e) => setMount(e.target.value)}
                   />
@@ -354,7 +340,7 @@ const Component = ({ onClose }) => {
                 <Divider y={8} />
                 <Flex justify='center' gap={4}>
                   <Text>Disponible: </Text>
-                  <Text isBold>${Number(totalTokensUSD[tokenSelected]).toFixed(2)}</Text>
+                  <Text isBold>${formatAmountNumber(Number(bigNumberTokenToString(tokens?.nars)))}</Text>
                 </Flex>
               </>
             ) : (
@@ -364,7 +350,7 @@ const Component = ({ onClose }) => {
                   <Flex justify='space-between'>
                     <Text size='small'>Monto</Text>
                     <Flex justify='end' align='center' gap={8}>
-                      <Text isBold>USD {Number(mount)?.toFixed(2)}</Text>
+                      <Text isBold>${Number(mount)?.toFixed(2)}</Text>
 
                       <div>
                         <Button size='small' type='bezeled' onClick={handleChangeAmount}>
@@ -376,7 +362,7 @@ const Component = ({ onClose }) => {
                   <Hr />
                   <Flex justify='space-between'>
                     <Text size='small'>Comision</Text>
-                    <Text isBold>USD {0.01}</Text>
+                    <Text isBold>${Number(gasPrice).toFixed(2)}</Text>
                   </Flex>
                   <Hr />
                   <Flex justify='space-between'>
@@ -384,7 +370,7 @@ const Component = ({ onClose }) => {
                       Total
                     </Text>
                     <Text size='large' isBold>
-                      ${(Number(mount) * price.dai + Number(gasPrice) * price[tokenSelected]).toFixed(2)}
+                      ${(Number(mount) + Number(gasPrice)).toFixed(2)}
                     </Text>
                   </Flex>
                 </>
