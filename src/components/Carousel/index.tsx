@@ -51,8 +51,13 @@ const Carousel: React.FC<CarouselProps> = ({ slides, onFinish }) => {
             </div>
           ))}
         </div>
-        <div className={styles.chipsContainer}>
-          {/* <ArrowLeft onClick={prevSlide} className={styles.arrow} /> */}
+        <div
+          className={styles.chipsContainer}
+          style={{ justifyContent: !onFinish ? "space-between" : "center" }}
+        >
+          {!onFinish && (
+            <ArrowLeft onClick={prevSlide} className={styles.arrow} />
+          )}
           <div className={styles.chips}>
             {slides.map((_, index) => (
               <div
@@ -64,31 +69,35 @@ const Carousel: React.FC<CarouselProps> = ({ slides, onFinish }) => {
               />
             ))}
           </div>
-          {/* <ArrowRight onClick={nextSlide} className={styles.arrow} /> */}
+          {!onFinish && (
+            <ArrowRight onClick={nextSlide} className={styles.arrow} />
+          )}
         </div>
       </div>
       <Divider y={26} />
-      <Flex background="gray5">
-        <Container>
-          <Divider y={16} />
-          <Flex
-            direction={{ base: "column-reverse", md: "row" }}
-            justify={"center"}
-            gap={8}
-          >
-            <Button
-              type="bezeledGray"
-              onClick={prevSlide}
-              isDisabled={currentSlide - 1 < 0}
+      {onFinish && (
+        <Flex background="gray5">
+          <Container>
+            <Divider y={16} />
+            <Flex
+              direction={{ base: "column-reverse", md: "row" }}
+              justify={"center"}
+              gap={8}
             >
-              Anterior
-            </Button>
+              <Button
+                type="bezeledGray"
+                onClick={prevSlide}
+                isDisabled={currentSlide - 1 < 0}
+              >
+                Anterior
+              </Button>
 
-            <Button onClick={nextSlide}>Continuar</Button>
-          </Flex>
-          <Divider y={16} />
-        </Container>
-      </Flex>
+              <Button onClick={nextSlide}>Continuar</Button>
+            </Flex>
+            <Divider y={16} />
+          </Container>
+        </Flex>
+      )}
     </>
   );
 };
