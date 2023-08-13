@@ -30,12 +30,13 @@
 .slideActive {
   display: block;
   opacity: 1;
+  height: 100%;
 }
 
 /* Carousel Chips */
 .chipsContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 10px;
 }
