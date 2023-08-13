@@ -58,7 +58,11 @@ const Component = ({ onClose }) => {
 
   return (
     <>
-      <Navbar type="modal" title="Testeando" onClose={handleCloseModal} />
+      <Navbar
+        type="minimalModal"
+        title="Testeando"
+        onClose={handleCloseModal}
+      />
       <ScreenView>
         <Divider y={32} />
         <Carousel
@@ -84,7 +88,6 @@ const Component = ({ onClose }) => {
             />,
           ]}
         />
-        <Divider y={32} />
       </ScreenView>
 
       {/* <Flex background="gray5">
