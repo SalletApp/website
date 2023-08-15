@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+// @ts-nocheck
+import { useState } from "react";
 import { ethers } from "ethers";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useDisclosure, useToast, Checkbox, Image } from "@chakra-ui/react";
 
 import { useAccount } from "src/context/Account";
@@ -20,22 +22,22 @@ import Button from "src/components/Shared/Button";
 import Mnemonic from "src/components/Mnemonic";
 import Carousel from "src/components/Carousel";
 
-const OnboardingSlide = () => (
+const OnboardingSlide = ({ image, title, description }) => (
   <Flex
     style={{ backgroundColor: "var(--chakra-colors-primary)" }}
     direction="column"
     height="100%"
   >
     <Flex height="100%" align="center" justify="center">
-      <Image src="/backup.png" alt={` Sallet.app`} />
+      <Image src={image} alt={`${title} - Sallet.app`} />
     </Flex>
 
     <Flex direction="column" align="center">
       <Heading color="#111111" as="h3">
-        Not your keys, not your coin
+        {title}
       </Heading>
       <Text color="#111111" align="center">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        {description}
       </Text>
     </Flex>
     <Divider y={20} />
@@ -43,6 +45,7 @@ const OnboardingSlide = () => (
 );
 
 const Backup = () => {
+  const router = useRouter();
   // Chakra
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -171,8 +174,35 @@ const Backup = () => {
         <Carousel
           theme="light"
           onFinish={handleShowMnemonic}
-          slides={[<OnboardingSlide />, <OnboardingSlide />]}
           background="var(--chakra-colors-primary)"
+          footerStyles={{
+            nextButton: {
+              text: "Continuar",
+              brand: "primary",
+            },
+            prevButton: {
+              disable: false,
+              text: "Más tarde",
+              onClick: () => router.push("/dashboard"),
+            },
+          }}
+          slides={[
+            <OnboardingSlide
+              image="/backup.png"
+              title="Not your keys, not your coins"
+              description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            />,
+            <OnboardingSlide
+              image="/backup.png"
+              title="Not your keys, not your coins"
+              description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            />,
+            <OnboardingSlide
+              image="/backup.png"
+              title="Not your keys, not your coins"
+              description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            />,
+          ]}
         />
       )}
 

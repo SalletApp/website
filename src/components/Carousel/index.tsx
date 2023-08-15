@@ -8,11 +8,31 @@ import Button from "src/components/Shared/Button";
 import Divider from "src/components/Shared/Divider";
 import Flex from "src/components/Shared/Flex";
 
+type FooterNextButtonProps = {
+  brand?: string;
+  disable?: boolean;
+  text?: string;
+};
+
+type FooterPrevButtonProps = {
+  type?: string;
+  disable?: boolean;
+  text?: string;
+  onClick?: () => void;
+};
+
+type FooterStylesProps = {
+  background?: string;
+  nextButton?: FooterNextButtonProps;
+  prevButton?: FooterPrevButtonProps;
+};
+
 interface CarouselProps {
   slides: Array<ReactElement>;
   onFinish?: () => void;
   background?: string;
   theme?: "light" | "dark";
+  footerStyles?: FooterStylesProps;
 }
 
 const Carousel: React.FC<CarouselProps> = ({
@@ -20,6 +40,7 @@ const Carousel: React.FC<CarouselProps> = ({
   onFinish,
   background,
   theme = "dark",
+  footerStyles,
 }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
@@ -27,9 +48,9 @@ const Carousel: React.FC<CarouselProps> = ({
     setCurrentSlide(slideIndex);
   };
 
+  const isLastSlide = currentSlide + 1 === slides.length;
   const nextSlide = () => {
-    let idx =
-      currentSlide + 1 === slides.length ? currentSlide : currentSlide + 1;
+    let idx = isLastSlide ? currentSlide : currentSlide + 1;
 
     if (idx === currentSlide) {
       onFinish();
@@ -38,9 +59,39 @@ const Carousel: React.FC<CarouselProps> = ({
     goToSlide(idx);
   };
 
+  const isFirstSlide = currentSlide - 1 < 0;
   const prevSlide = () => {
-    const idx = currentSlide - 1 < 0 ? currentSlide : currentSlide - 1;
+    const idx = isFirstSlide ? currentSlide : currentSlide - 1;
     goToSlide(idx);
+  };
+
+  const defaultFooterStyles: FooterStylesProps = {
+    background: footerStyles?.background || "gray5",
+    nextButton: {
+      brand:
+        footerStyles?.nextButton?.brand ||
+        (isLastSlide ? "secondary" : "primary"),
+      disable: footerStyles?.nextButton?.disable || false,
+      text:
+        footerStyles?.nextButton?.text ||
+        (isLastSlide ? "Finalizar" : "Continuar"),
+    },
+    prevButton: {
+      type: footerStyles?.prevButton?.type || "bezeledGray",
+      disable:
+        footerStyles?.prevButton?.disable !== undefined
+          ? footerStyles?.prevButton?.disable
+          : isFirstSlide,
+      text:
+        (footerStyles?.prevButton?.text &&
+          isFirstSlide &&
+          footerStyles?.prevButton?.text) ||
+        "Anterior",
+      onClick:
+        footerStyles.prevButton.onClick && isFirstSlide
+          ? footerStyles?.prevButton?.onClick
+          : prevSlide,
+    },
   };
 
   return (
@@ -85,7 +136,7 @@ const Carousel: React.FC<CarouselProps> = ({
         <Divider y={16} />
       </Container>
       {onFinish && (
-        <Flex background="gray5">
+        <Flex background={defaultFooterStyles.background}>
           <Container>
             <Divider y={16} />
             <Flex
@@ -94,20 +145,18 @@ const Carousel: React.FC<CarouselProps> = ({
               gap={8}
             >
               <Button
-                type="bezeledGray"
-                onClick={prevSlide}
-                isDisabled={currentSlide - 1 < 0}
+                type={defaultFooterStyles.prevButton.type}
+                onClick={defaultFooterStyles.prevButton.onClick}
+                isDisabled={defaultFooterStyles.prevButton.disable}
               >
-                Anterior
+                {defaultFooterStyles.prevButton.text}
               </Button>
 
               <Button
                 onClick={nextSlide}
-                brand={
-                  currentSlide + 1 === slides.length ? "secondary" : "primary"
-                }
+                brand={defaultFooterStyles.nextButton.brand}
               >
-                {currentSlide + 1 === slides.length ? "Finalizar" : "Continuar"}
+                {defaultFooterStyles.nextButton.text}
               </Button>
             </Flex>
             <Divider y={16} />
