@@ -14,14 +14,25 @@
 .chip {
   width: 20px;
   height: 4px;
-  background-color: var(--chakra-colors-gray25);
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
 }
 
-.chipActive {
+.chipDark {
+  background-color: var(--chakra-colors-gray25);
+}
+
+.chipActiveDark {
   background-color: var(--chakra-colors-primary);
+}
+
+.chipLight {
+  background-color: #f3f3f3;
+}
+
+.chipActiveLight {
+  background-color: #111111;
 }
 
 .arrow {

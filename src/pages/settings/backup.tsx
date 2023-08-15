@@ -1,15 +1,7 @@
-// @ts-nocheck
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Head from "next/head";
-import {
-  Box,
-  useDisclosure,
-  VStack,
-  HStack,
-  useToast,
-  Checkbox,
-} from "@chakra-ui/react";
+import { useDisclosure, useToast, Checkbox, Image } from "@chakra-ui/react";
 
 import { useAccount } from "src/context/Account";
 import { db } from "src/utils/db";
@@ -26,6 +18,29 @@ import Flex from "src/components/Shared/Flex";
 import Divider from "src/components/Shared/Divider";
 import Button from "src/components/Shared/Button";
 import Mnemonic from "src/components/Mnemonic";
+import Carousel from "src/components/Carousel";
+
+const OnboardingSlide = () => (
+  <Flex
+    style={{ backgroundColor: "var(--chakra-colors-primary)" }}
+    direction="column"
+    height="100%"
+  >
+    <Flex height="100%" align="center" justify="center">
+      <Image src="/backup.png" alt={` Sallet.app`} />
+    </Flex>
+
+    <Flex direction="column" align="center">
+      <Heading color="#111111" as="h3">
+        Not your keys, not your coin
+      </Heading>
+      <Text color="#111111" align="center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </Text>
+    </Flex>
+    <Divider y={20} />
+  </Flex>
+);
 
 const Backup = () => {
   // Chakra
@@ -36,6 +51,7 @@ const Backup = () => {
   const mnemonic = decrypt(wallet?.account?.seedPhrase)?.replaceAll('"', "");
 
   const [hasSave, setHasSave] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(true);
 
   const [showMnemonic, setShowMnemonic] = useState(false);
   const [showValidateMnemonic, setShowValidateMnemonic] = useState(false);
@@ -79,6 +95,7 @@ const Backup = () => {
   };
 
   const handleShowMnemonic = () => {
+    setShowOnboarding(false);
     setShowMnemonic(true);
   };
 
@@ -95,103 +112,106 @@ const Backup = () => {
         <title>Backup - Sallet</title>
       </Head>
       <Navbar />
-      <ScreenView justify="center">
-        <Container size="small">
-          {showMnemonic ? (
-            showValidateMnemonic ? (
+      {!showOnboarding && (
+        <ScreenView justify="center">
+          <Container size="small">
+            {showMnemonic &&
+              (showValidateMnemonic ? (
+                <>
+                  <Heading as="h2">¡Verifiquemos juntos!</Heading>
+                  <Divider y={8} />
+                  <Text size="large">
+                    Escribe en orden las palabras que guardamos para verificar
+                    que realmente lo hemos hecho bien.
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Heading as="h2">Frase semilla.</Heading>
+                  <Divider y={8} />
+                  <Text size="large">
+                    La frase semilla es un grupo de 12 palabras que son la llave
+                    principal de tus activos.
+                  </Text>
+                </>
+              ))}
+            {showMnemonic && showValidateMnemonic && (
               <>
-                <Heading as="h2">¡Verifiquemos juntos!</Heading>
-                <Divider y={8} />
-                <Text size="large">
-                  Escribe en orden las palabras que guardamos para verificar que
-                  realmente lo hemos hecho bien.
-                </Text>
+                <Divider y={16} />
+                <Mnemonic
+                  mnemonic={localMnemonic}
+                  handleChange={handleChangeMnemonic}
+                  readOnly={false}
+                />
               </>
-            ) : (
-              <>
-                <Heading as="h2">Frase semilla.</Heading>
-                <Divider y={8} />
-                <Text size="large">
-                  La frase semilla es un grupo de 12 palabras que son la llave
-                  principal de tus activos.
-                </Text>
-              </>
-            )
-          ) : (
-            <>
-              <Heading>
-                Sin frase,
-                <br /> no hay dinero.
-              </Heading>
-              <Divider y={8} />
-              <Text size="large">
-                A los cripto-usuarios nos gusta usar esta frase para recordar
-                que sin frase semilla, no hay activos.
-              </Text>
-            </>
-          )}
-
-          {showMnemonic && showValidateMnemonic && (
-            <>
-              <Divider y={16} />
-              <Mnemonic
-                mnemonic={localMnemonic}
-                handleChange={handleChangeMnemonic}
-                readOnly={false}
-              />
-            </>
-          )}
-          {showMnemonic && !showValidateMnemonic && (
-            <>
-              <Divider y={16} />
-              <Mnemonic mnemonic={mnemonic?.split(" ")} readOnly={true} />
-              <Checkbox
-                size="lg"
-                width="100%"
-                justifyContent="space-between"
-                color="#fff"
-                bg="#1F1F1F"
-                p="20px"
-                borderRadius="4px"
-                onChange={() => setHasSave(!hasSave)}
-              >
-                Confirmo haberlas guardado.
-              </Checkbox>
-            </>
-          )}
-        </Container>
-      </ScreenView>
-      <Flex background="gray5">
-        <Container>
-          <Divider y={16} />
-          <Flex
-            direction={{ base: "column-reverse", md: "row" }}
-            justify={"center"}
-            gap={8}
-          >
-            <Link href="/dashboard" type="bezeledGray" passHref>
-              Más tarde
-            </Link>
-            {!showMnemonic && (
-              <Button onClick={handleShowMnemonic}>Continuar</Button>
             )}
             {showMnemonic && !showValidateMnemonic && (
-              <Button isDisabled={!hasSave} onClick={handleConfirmSaveMnemonic}>
-                Continuar
-              </Button>
+              <>
+                <Divider y={16} />
+                <Mnemonic mnemonic={mnemonic?.split(" ")} readOnly={true} />
+                <Checkbox
+                  size="lg"
+                  width="100%"
+                  justifyContent="space-between"
+                  color="#fff"
+                  bg="#1F1F1F"
+                  p="20px"
+                  borderRadius="4px"
+                  onChange={() => setHasSave(!hasSave)}
+                >
+                  Confirmo haberlas guardado.
+                </Checkbox>
+              </>
             )}
-            {showMnemonic && showValidateMnemonic && (
-              <Button
-                brand="secondary"
-                onClick={() => handleSubmit(localMnemonic)}
-              >
-                Validar
-              </Button>
-            )}
-          </Flex>
-          <Divider y={16} />
-        </Container>
-      </Flex>
+          </Container>
+        </ScreenView>
+      )}
+
+      {showOnboarding && (
+        <Carousel
+          theme="light"
+          onFinish={handleShowMnemonic}
+          slides={[<OnboardingSlide />, <OnboardingSlide />]}
+          background="var(--chakra-colors-primary)"
+        />
+      )}
+
+      {!showOnboarding && (
+        <Flex background="gray5">
+          <Container>
+            <Divider y={16} />
+            <Flex
+              direction={{ base: "column-reverse", md: "row" }}
+              justify={"center"}
+              gap={8}
+            >
+              <Link href="/dashboard" type="bezeledGray" passHref>
+                Más tarde
+              </Link>
+              {!showMnemonic && (
+                <Button onClick={handleShowMnemonic}>Continuar</Button>
+              )}
+              {showMnemonic && !showValidateMnemonic && (
+                <Button
+                  isDisabled={!hasSave}
+                  onClick={handleConfirmSaveMnemonic}
+                >
+                  Continuar
+                </Button>
+              )}
+              {showMnemonic && showValidateMnemonic && (
+                <Button
+                  brand="secondary"
+                  onClick={() => handleSubmit(localMnemonic)}
+                >
+                  Validar
+                </Button>
+              )}
+            </Flex>
+            <Divider y={16} />
+          </Container>
+        </Flex>
+      )}
 
       <Modal type="backup" isOpen={isOpen} onClose={onClose} />
     </>
