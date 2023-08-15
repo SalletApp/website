@@ -88,7 +88,7 @@ const Carousel: React.FC<CarouselProps> = ({
           footerStyles?.prevButton?.text) ||
         "Anterior",
       onClick:
-        footerStyles.prevButton.onClick && isFirstSlide
+        footerStyles?.prevButton?.onClick && isFirstSlide
           ? footerStyles?.prevButton?.onClick
           : prevSlide,
     },
