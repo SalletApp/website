@@ -10,7 +10,7 @@ import Text from "../components/Shared/Text";
 import ButtonCircle from "../components/Shared/ButtonCircle";
 import Link from "../components/Shared/Link";
 
-import Navbar from "src/components/Layout/Navbar";
+import Header from "src/components/Layout/Header";
 import Container from "src/components/Layout/Container";
 import ScreenView from "src/components/Layout/ScreenView";
 import FullModal from "src/components/FullModal";
@@ -74,7 +74,7 @@ const Dashboard = () => {
       <Head>
         <title>Wallet - Sallet</title>
       </Head>
-      <Navbar
+      <Header
         type={openModal ? "modal" : "page"}
         title={typeModal || ""}
         onClose={handleCloseFullModal}

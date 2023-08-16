@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { Image } from "@chakra-ui/react";
 
-import Navbar from "src/components/Layout/Navbar";
+import Header from "src/components/Layout/Header";
 import Text from "src/components/Shared/Text";
 import ScreenView from "src/components/Layout/ScreenView";
 import Flex from "src/components/Shared/Flex";
@@ -48,7 +48,7 @@ const Component = ({ onClose }) => {
 
   return (
     <>
-      <Navbar
+      <Header
         type="minimalModal"
         title="Testeando"
         onClose={handleCloseModal}

@@ -9,7 +9,7 @@ import { useAccount } from "src/context/Account";
 import { db } from "src/utils/db";
 import { decrypt } from "src/hooks/useCrypto";
 
-import Navbar from "src/components/Layout/Navbar";
+import Header from "src/components/Layout/Header";
 import Container from "src/components/Layout/Container";
 import ScreenView from "src/components/Layout/ScreenView";
 import Modal from "src/components/Modal";
@@ -114,7 +114,7 @@ const Backup = () => {
       <Head>
         <title>Backup - Sallet</title>
       </Head>
-      <Navbar />
+      <Header />
       {!showOnboarding && (
         <ScreenView justify="center">
           <Container size="small">
