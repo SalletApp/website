@@ -136,6 +136,7 @@ const Dashboard = () => {
             price={tokens?.nars}
             readOnly
           />
+          <Token name="tla" token={tokens?.tla} price={tokens?.tla} readOnly />
           <Divider y={16} />
           <Flex>
             <Button isBlock type="bezeledGray">

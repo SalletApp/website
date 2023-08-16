@@ -1,19 +1,20 @@
 // @ts-nocheck
-import React, { createContext, useContext, useState } from 'react';
-import { BigNumber, ethers } from 'ethers';
-import { useToast } from '@chakra-ui/react';
+import React, { createContext, useContext, useState } from "react";
+import { BigNumber, ethers } from "ethers";
+import { useToast } from "@chakra-ui/react";
 
-import { useBlockchain } from './Blockchain';
-import { useAccount } from './Account';
+import { useBlockchain } from "./Blockchain";
+import { useAccount } from "./Account";
 
-import abiDAI from 'src/utils/abi/DAI.json';
-import abiNARS from 'src/utils/abi/NARS.json';
-import bigNumberTokenToString from 'src/hooks/useUtils';
+import abiDAI from "src/utils/abi/DAI.json";
+import abiNARS from "src/utils/abi/NARS.json";
+import bigNumberTokenToString from "src/hooks/useUtils";
 
-type TokenName = 'nars';
+type TokenName = "nars";
 interface TokenContextInterface {
   tokens: {
     nars: BigNumber;
+    tla: BigNumber;
   };
   sendTransaction: (address: string, mount: number, token: TokenName) => null;
 }
@@ -26,7 +27,7 @@ const TokenContext = createContext<TokenContextInterface | null>(null);
 // Test
 // const addressDAI = '0x11fe4b6ae13d2a6055c8d9cf65c55bac32b5d844';
 // const addressUSDC = '0xe27658a36ca8a59fe5cc76a14bde34a51e587ab4';
-const addressNARS = '0x5e40f26E89213660514c51Fb61b2d357DBf63C85';
+const addressNARS = "0x5e40f26E89213660514c51Fb61b2d357DBf63C85";
 
 export function TokenWrapper({ children }) {
   // Chakra
@@ -38,25 +39,35 @@ export function TokenWrapper({ children }) {
 
   // Component
   const [tokenNARS, setTokenNARS] = useState(ethers.constants.Zero);
+  const [tokenTla, setTokenTla] = useState(ethers.constants.Zero);
 
-  const providerNARS = new ethers.Contract(addressNARS, abiNARS, laChainProvider);
+  const providerNARS = new ethers.Contract(
+    addressNARS,
+    abiNARS,
+    laChainProvider
+  );
 
   // Obtener balance de Ethereum y DAI
   if (!!wallet?.address?.eth) {
-    laChainProvider.on('block', () => {
+    laChainProvider.on("block", () => {
       providerNARS.balanceOf(wallet?.address?.eth).then((balance) => {
         if (!balance?.eq(tokenNARS)) {
           setTokenNARS(balance);
         }
       });
+      laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
+        if (!balance?.eq(tokenTla)) {
+          setTokenTla(balance);
+        }
+      });
     });
     // kovanProvider?.on('block', () => {
     //   if (tokenETH?.isZero() && tokenDAI?.isZero()) {
-    //     kovanProvider.getBalance(wallet?.address?.eth).then((balance) => {
-    //       if (!balance?.eq(tokenETH)) {
-    //         setTokenETH(balance);
-    //       }
-    //     });
+    // kovanProvider.getBalance(wallet?.address?.eth).then((balance) => {
+    //   if (!balance?.eq(tokenETH)) {
+    //     setTokenETH(balance);
+    //   }
+    // });
 
     //     providerDAI.balanceOf(wallet?.address?.eth).then((balance) => {
     //       if (!balance?.eq(tokenDAI)) {
@@ -72,7 +83,7 @@ export function TokenWrapper({ children }) {
     const addressIsValid = ethers.utils.isAddress(toAddress);
     if (addressIsValid) {
       // Send token nARS
-      if (token === 'nars') {
+      if (token === "nars") {
         const narsSigner = providerNARS.connect(signer);
         const nars = ethers.utils.parseUnits(String(mount), 18);
 
@@ -129,8 +140,8 @@ export function TokenWrapper({ children }) {
       // }
     } else {
       toast({
-        description: 'La address parece ser incorrecta.',
-        status: 'warning',
+        description: "La address parece ser incorrecta.",
+        status: "warning",
       });
 
       return {
@@ -141,7 +152,11 @@ export function TokenWrapper({ children }) {
   };
 
   return (
-    <TokenContext.Provider value={{ tokens: { nars: tokenNARS }, sendTransaction }}>{children}</TokenContext.Provider>
+    <TokenContext.Provider
+      value={{ tokens: { nars: tokenNARS, tla: tokenTla }, sendTransaction }}
+    >
+      {children}
+    </TokenContext.Provider>
   );
 }
 
