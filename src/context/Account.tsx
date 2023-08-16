@@ -98,7 +98,7 @@ export function AccountWrapper({ children }) {
           },
           backup: false,
           version: 3,
-          showOnboarding: true,
+          showOnboarding: false,
         });
 
         await db.wallets.add({
@@ -106,7 +106,7 @@ export function AccountWrapper({ children }) {
           account: encrypt(accountInstance),
           backup: false,
           version: 3,
-          showOnboarding: true,
+          showOnboarding: false,
         });
 
         return { success: true, error: null };
