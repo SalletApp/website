@@ -41,7 +41,7 @@ export function TokenWrapper({ children }) {
 
   // Component
   const [tokenNARS, setTokenNARS] = useState(ethers.constants.Zero);
-  const [tokenContract, setTokenContract] = useState(null);
+  const [tokenContract, setTokenContract] = useState(ethers.constants.Zero);
   const [token, setToken] = useState(ethers.constants.Zero);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export function TokenWrapper({ children }) {
   }, []);
 
   // Obtener balance de Ethereum y DAI
-  if (!!wallet?.address?.eth) {
+  if (!!wallet?.address?.eth && !!tokenContract) {
     laChainProvider.on('block', () => {
       laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
         if (!balance?.eq(token)) {
@@ -57,16 +57,16 @@ export function TokenWrapper({ children }) {
         }
       });
 
-      tokenContract.balanceOf(wallet?.address?.eth).then((balance) => {
+      tokenContract?.balanceOf(wallet?.address?.eth).then((balance) => {
         if (!balance?.eq(tokenNARS)) {
           setTokenNARS(balance);
         }
       });
-      laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
-        if (!balance?.eq(token)) {
-          setTokenContract(balance);
-        }
-      });
+      // laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
+      //   if (!balance?.eq(token)) {
+      //     setTokenContract(balance);
+      //   }
+      // });
     });
     // kovanProvider?.on('block', () => {
     //   if (tokenETH?.isZero() && tokenDAI?.isZero()) {
@@ -87,6 +87,7 @@ export function TokenWrapper({ children }) {
 
   // Enviar transaccion
   const sendTransaction = async (toAddress, mount, token) => {
+    debugger;
     const addressIsValid = ethers.utils.isAddress(toAddress);
     if (addressIsValid) {
       // Send token nARS
