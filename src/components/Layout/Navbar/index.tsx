@@ -30,11 +30,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
     <Flex background="gray5">
       <Container>
         <Divider y={16} />
-        <Flex
-          direction={{ base: "column-reverse", md: "row" }}
-          justify={"center"}
-          gap={8}
-        >
+        <Flex justify="center">
           <Link
             style={{ backgroundColor: "transparent" }}
             href="/dashboard"
@@ -53,7 +49,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
               <Text>Inicio</Text>
             </Flex>
           </Link>
-          <div style={{ marginTop: -20 }}>
+          <div style={{ marginTop: -30, marginBottom: -30 }}>
             <QrButton />
           </div>
           <Link

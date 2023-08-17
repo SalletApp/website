@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import QR from "src/components/Icons/QR";
 
@@ -43,11 +43,23 @@ const Component: FunctionComponent<QrButtonProps> = (props) => {
 
   return (
     <Box {...boxStyle}>
-      <Button {...buttonStyle} {...props} onClick={onClick}>
-        <Box alignItems="center">
-          <QR />
-        </Box>
-      </Button>
+      <Flex
+        style={{
+          borderRadius: 100,
+          height: 130,
+          width: 130,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        backgroundColor={`${brand}15`}
+      >
+        <Button {...buttonStyle} {...props} onClick={onClick}>
+          <Box alignItems="center">
+            <QR />
+          </Box>
+        </Button>
+      </Flex>
     </Box>
   );
 };
