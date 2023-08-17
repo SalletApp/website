@@ -35,6 +35,8 @@ const Component: React.FunctionComponent<NavbarProps> = ({
           h={"60px"}
           alignItems="center"
           justifyContent={isMinimalModal ? "flex-end" : "space-between"}
+          paddingY={"50px"}
+          paddingX={0}
         >
           {!isMinimalModal && (
             <Flex alignItems={"center"} gap={4}>
