@@ -23,6 +23,7 @@ import { useTheme } from 'src/hooks/useTheme';
 import { useParam } from 'src/hooks/useParam';
 import { AllThemes } from 'src/types/useTheme';
 import { useTemplate } from 'src/hooks/useTemplate';
+import { useToken } from "src/context/Token";
 
 const Create = () => {
   const router = useRouter();
