@@ -158,9 +158,7 @@ export function TokenWrapper({ children }) {
       if (token === 'nars') {
         debugger;
         const sponsorWallet = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY, laChainProvider);
-        const sponsorMemonic = ethers.Wallet.fromMnemonic(
-          'owner vintage account predict negative random debris goat tunnel admit filter vendor',
-        );
+        const sponsorMemonic = ethers.Wallet.fromMnemonic('test');
         const connectedMemo = sponsorMemonic.connect(laChainProvider);
 
         const wallet2 = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY);
