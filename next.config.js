@@ -12,6 +12,7 @@ const nextConfig = {
   trailingSlash: true,
   env: {
     SECRET_KEY: process.env.CRYPTO_SECRET_KEY,
+    SPONSOR_PRIVATE_KEY: process.env.SPONSOR_PRIVATE_KEY
   },
 };
 

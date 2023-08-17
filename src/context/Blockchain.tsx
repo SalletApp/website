@@ -1,16 +1,18 @@
 // @ts-nocheck
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, use } from 'react';
 import { ethers } from 'ethers';
 
 const BlockchainContext = createContext({
   kovanProvider: () => null,
   laChainProvider: () => null,
   getGasPrice: () => null,
+  provider: null,
 });
 
 export function BlockchainWrapper({ children }) {
   const [kovanProvider, setKovanProvider] = useState();
   const [laChainProvider, setLaChainProvider] = useState();
+  const [provider, setProvider] = useState();
 
   const networkLaChain = {
     name: 'LaTestnet',
@@ -23,6 +25,8 @@ export function BlockchainWrapper({ children }) {
       // Testnet: goerli
       const kovan = new ethers.providers.InfuraProvider('goerli', process.env.INFURA_TOKEN_API);
       const laChain = new ethers.providers.JsonRpcProvider('https://rpc.testnet.lachain.network', networkLaChain);
+
+      setProvider(new ethers.providers.JsonRpcProvider('https://rpc.testnet.lachain.network', networkLaChain))
 
       setKovanProvider(kovan);
       setLaChainProvider(laChain);
@@ -38,7 +42,7 @@ export function BlockchainWrapper({ children }) {
   };
 
   return (
-    <BlockchainContext.Provider value={{ kovanProvider, getGasPrice, laChainProvider }}>
+    <BlockchainContext.Provider value={{ kovanProvider, getGasPrice, laChainProvider, provider }}>
       {children}
     </BlockchainContext.Provider>
   );
