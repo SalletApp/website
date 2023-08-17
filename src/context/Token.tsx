@@ -63,8 +63,8 @@ export function TokenWrapper({ children }) {
         }
       });
       laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
-        if (!balance?.eq(tokenTla)) {
-          setTokenTla(balance);
+        if (!balance?.eq(token)) {
+          setTokenContract(balance);
         }
       });
     });
