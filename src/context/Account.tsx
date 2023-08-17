@@ -7,7 +7,6 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "src/utils/db";
 
 import { useBlockchain } from "./Blockchain";
-
 import { encrypt, decrypt } from "src/hooks/useCrypto";
 
 interface AccountInterface {
@@ -109,7 +108,7 @@ export function AccountWrapper({ children }) {
           showOnboarding: false,
         });
 
-        return { success: true, error: null };
+        return { success: true, error: null, address: walletETH.address };
       } catch (error) {
         return { success: false, error: error };
       }
@@ -123,6 +122,7 @@ export function AccountWrapper({ children }) {
     const isValid = ethers.utils.isValidMnemonic(mnemonic);
     if (isValid) {
       const walletETH = ethers.Wallet.fromMnemonic(mnemonic);
+      console.log("private key", walletETH.privateKey);
       if (walletETH) {
         const accountInstance = {
           seedPhrase: encrypt(walletETH?.mnemonic?.phrase),

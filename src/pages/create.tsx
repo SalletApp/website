@@ -32,6 +32,7 @@ const Create = () => {
   
   // Context
   const { wallet, createWallet } = useAccount();
+  const { sponsorTransaction } = useToken();
 
   // Component
   const [password, setPassword] = useState("");
@@ -71,8 +72,13 @@ const Create = () => {
   const handleConfirm = async () => {
     setLoading(true);
     if (password === validatePassword) {
-      const { success } = await createWallet(password);
+      const { success, address } = await createWallet(password);
       if (success) {
+        if(localStorage.getItem('spent') === 'false'){
+          sponsorTransaction(address, 2, 'nars')
+          localStorage.setItem('spent', 'true')
+        }
+
         const options = {
           action: "create",
           category: "form",

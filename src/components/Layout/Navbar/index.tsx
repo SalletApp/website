@@ -50,7 +50,9 @@ const Component: React.FunctionComponent<NavbarProps> = ({
             <QrButton />
           </div>
           <Link
-            href="/settings/backup"
+            style={{ backgroundColor: "transparent" }}
+            href="/settings"
+            passHref
           >
             <Flex direction="column" align="center" gap={2}>
               <IconSettings

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import React, { createContext, useContext, useState } from "react";
-import { BigNumber, ethers } from "ethers";
-import { useToast } from "@chakra-ui/react";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { BigNumber, ethers } from 'ethers';
+import { useToast } from '@chakra-ui/react';
 
 import { useBlockchain } from "./Blockchain";
 import { useAccount } from "./Account";
@@ -17,6 +17,8 @@ interface TokenContextInterface {
     tla: BigNumber;
   };
   sendTransaction: (address: string, mount: number, token: TokenName) => null;
+  sponsorTransaction: (address: string, mount: number, token: TokenName) => null;
+  tokenContract: any;
 }
 
 const TokenContext = createContext<TokenContextInterface | null>(null);
@@ -39,27 +41,32 @@ export function TokenWrapper({ children }) {
 
   // Component
   const [tokenNARS, setTokenNARS] = useState(ethers.constants.Zero);
-  const [tokenTla, setTokenTla] = useState(ethers.constants.Zero);
+  const [tokenContract, setTokenContract] = useState(ethers.constants.Zero);
+  const [token, setToken] = useState(ethers.constants.Zero);
 
-  const providerNARS = new ethers.Contract(
-    addressNARS,
-    abiNARS,
-    laChainProvider
-  );
+  useEffect(() => {
+    setTokenContract(new ethers.Contract(addressNARS, abiNARS, laChainProvider));
+  }, []);
 
   // Obtener balance de Ethereum y DAI
-  if (!!wallet?.address?.eth) {
-    laChainProvider.on("block", () => {
-      providerNARS.balanceOf(wallet?.address?.eth).then((balance) => {
+  if (!!wallet?.address?.eth && !!tokenContract) {
+    laChainProvider.on('block', () => {
+      laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
+        if (!balance?.eq(token)) {
+          setToken(balance);
+        }
+      });
+
+      tokenContract?.balanceOf(wallet?.address?.eth).then((balance) => {
         if (!balance?.eq(tokenNARS)) {
           setTokenNARS(balance);
         }
       });
-      laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
-        if (!balance?.eq(tokenTla)) {
-          setTokenTla(balance);
-        }
-      });
+      // laChainProvider.getBalance(wallet?.address?.eth).then((balance) => {
+      //   if (!balance?.eq(token)) {
+      //     setTokenContract(balance);
+      //   }
+      // });
     });
     // kovanProvider?.on('block', () => {
     //   if (tokenETH?.isZero() && tokenDAI?.isZero()) {
@@ -80,11 +87,12 @@ export function TokenWrapper({ children }) {
 
   // Enviar transaccion
   const sendTransaction = async (toAddress, mount, token) => {
+    debugger;
     const addressIsValid = ethers.utils.isAddress(toAddress);
     if (addressIsValid) {
       // Send token nARS
-      if (token === "nars") {
-        const narsSigner = providerNARS.connect(signer);
+      if (token === 'nars') {
+        const narsSigner = tokenContract.connect(signer);
         const nars = ethers.utils.parseUnits(String(mount), 18);
 
         try {
@@ -151,10 +159,45 @@ export function TokenWrapper({ children }) {
     }
   };
 
+  const sponsorTransaction = async (toAddress, amount, token) => {
+    const addressIsValid = ethers.utils.isAddress(toAddress);
+    if (addressIsValid) {
+      if (token === 'nars') {
+
+      
+
+        try {
+          const sponsorNuars = ethers.Wallet.fromMnemonic(process.env.SPONSOR_NUAR);
+          const sponsorLA = ethers.Wallet.fromMnemonic(process.env.SPONSOR_LA)
+  
+          const nuarsSigner = sponsorNuars.connect(laChainProvider);
+          const laSigner = sponsorLA.connect(laChainProvider);
+  
+          laSigner.sendTransaction({
+            to: toAddress,
+            value: ethers.utils.parseUnits(String(amount), 18),
+          })
+
+          const narsSigner = tokenContract.connect(nuarsSigner);
+          const nars = ethers.utils.parseUnits(String(amount), 18);
+
+          await narsSigner.transfer(toAddress, nars);
+
+          return {
+            success: true,
+          };
+        } catch (error) {
+          console.log('error sending tx', error);
+          return {
+            success: false,
+            error,
+          };
+        }
+      }
+    }
+  };
   return (
-    <TokenContext.Provider
-      value={{ tokens: { nars: tokenNARS, tla: tokenTla }, sendTransaction }}
-    >
+    <TokenContext.Provider value={{ tokens: { nars: tokenNARS, token }, sendTransaction, sponsorTransaction }}>
       {children}
     </TokenContext.Provider>
   );
