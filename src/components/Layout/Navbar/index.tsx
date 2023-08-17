@@ -27,7 +27,12 @@ const Component: React.FunctionComponent<NavbarProps> = ({
   const isSettingsPage = router.pathname === "/settings";
 
   return (
-    <Flex background="gray5">
+    <Flex
+      background="gray5" 
+      position={'sticky'}
+      bottom={0}
+      width={'100%'}
+    >
       <Container>
         <Flex justify="center" gap={10}>
           <Link href="/dashboard">

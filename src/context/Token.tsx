@@ -87,7 +87,6 @@ export function TokenWrapper({ children }) {
 
   // Enviar transaccion
   const sendTransaction = async (toAddress, mount, token) => {
-    debugger;
     const addressIsValid = ethers.utils.isAddress(toAddress);
     if (addressIsValid) {
       // Send token nARS

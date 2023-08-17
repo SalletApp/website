@@ -24,7 +24,7 @@ import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
 
 import bigNumberTokenToString from "src/hooks/useUtils";
 import formatAmountNumber from "src/lib/formatAmountNumber";
-import { useTemplate } from 'src/hooks/useTemplate';
+import { useTemplate } from "src/hooks/useTemplate";
 
 export async function getStaticProps() {
   // const { success, data } = await getPrices();
@@ -69,6 +69,8 @@ const Dashboard = () => {
       setOpenModal(true);
     }
   }, [wallet]);
+
+  const { coinData } = useTemplate();
 
   return (
     <>
@@ -116,7 +118,7 @@ const Dashboard = () => {
                   Number(bigNumberTokenToString(tokens?.nars))
                 )}
               </Text>
-              <Text fontSize={15}>LOLA</Text>
+              <Text fontSize={15}>{coinData.coinName}</Text>
             </Flex>
           </Flex>
 
@@ -149,26 +151,26 @@ const Dashboard = () => {
             type="drink"
             date="16/07/23"
             amount={tokens?.nars}
-            name="LOLA"
+            name={coinData?.coinSymbol}
             readOnly
           />
           <SpendItem
             type="merch"
             date="16/07/23"
             amount={tokens?.nars}
-            name="LOLA"
+            name={coinData?.coinSymbol}
             readOnly
           />
           <SpendItem
             type="food"
             date="16/07/23"
             amount={tokens?.nars}
-            name="LOLA"
+            name={coinData?.coinSymbol}
             readOnly
           />
           <Divider y={16} />
           <Flex>
-            <Button isBlock type="bezeled" brand="primary" rounded="9999px" >
+            <Button isBlock type="bezeled" brand="primary" rounded="9999px">
               Ver consumos
             </Button>
           </Flex>
@@ -206,7 +208,7 @@ const Dashboard = () => {
         open={openModal}
         onClose={() => setOpenModal(false)}
       />
-      <Navbar />
+      {/* <Navbar /> */}
       {/* </Flex> */}
     </>
   );

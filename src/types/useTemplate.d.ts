@@ -3,4 +3,8 @@ export interface ReturnUseTemplate {
   logo: string
   background: string
   chakraTheme: Dict<any>
+  coinData : {
+    coinSymbol: string
+    coinName: string
+  }
 }

@@ -33,14 +33,15 @@ import { QRCodeScanner } from "src/components/QRCodeScanner";
 import formatAmountNumber from "src/lib/formatAmountNumber";
 import { useTemplate } from 'src/hooks/useTemplate';
 
-const listTokens = {
-  nars: {
-    name: "nARS",
-  },
-};
-
 const Component = ({ onClose }) => {
-  const { logo } = useTemplate();
+  const { chakraTheme } = useTemplate()
+  const listTokens = {
+    nars: {
+      name: chakraTheme.coinSymbol,
+    },
+  };
+
+  const { logo, coinData } = useTemplate();
 
   // Chakra
   const toast = useToast();
@@ -356,7 +357,7 @@ const Component = ({ onClose }) => {
                     type="number"
                     autoFocus
                     placeholder="0.00"
-                    iconLeft={"ARS"}
+                    iconLeft={coinData.coinSymbol}
                     value={mount}
                     onChange={(e) => setMount(e.target.value)}
                   />
@@ -393,11 +394,11 @@ const Component = ({ onClose }) => {
                       </div>
                     </Flex>
                   </Flex>
-                  <Hr />
+                  {/* <Hr />
                   <Flex justify="space-between">
                     <Text size="small">Comision</Text>
                     <Text isBold>${Number(gasPrice).toFixed(2)}</Text>
-                  </Flex>
+                  </Flex> */}
                   <Hr />
                   <Flex justify="space-between">
                     <Text size="large" isBold>

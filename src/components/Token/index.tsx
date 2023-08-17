@@ -10,37 +10,8 @@ import IconTLA from "src/components/IconsFlag/TLA";
 
 import bigNumberTokenToString from "src/hooks/useUtils";
 import formatAmountNumber from "src/lib/formatAmountNumber";
+import { useTemplate } from "src/hooks/useTemplate";
 
-const listTokens = {
-  eth: {
-    name: "Ethereum",
-    symbol: "ETH",
-    icon: <IconETH />,
-    typeToken: true,
-    decimal: 4,
-  },
-  dai: {
-    name: "DAI",
-    symbol: "DAI",
-    icon: <IconDAI />,
-    typeToken: true,
-    decimal: 2,
-  },
-  nars: {
-    name: "Peso Argentino",
-    symbol: "nARS",
-    icon: <IconNARS />,
-    typeToken: false,
-    decimal: 2,
-  },
-  tla: {
-    name: "Lachain token",
-    symbol: "TLA",
-    icon: <IconTLA />,
-    typeToken: false,
-    decimal: 2,
-  },
-};
 
 const icons = {
   eth: IconETH,
@@ -49,6 +20,40 @@ const icons = {
 };
 
 const Component = (props) => {
+  const { coinData } = useTemplate();
+
+  const listTokens = {
+    eth: {
+      name: "Ethereum",
+      symbol: "ETH",
+      icon: <IconETH />,
+      typeToken: true,
+      decimal: 4,
+    },
+    dai: {
+      name: "DAI",
+      symbol: "DAI",
+      icon: <IconDAI />,
+      typeToken: true,
+      decimal: 2,
+    },
+    nars: {
+      name: coinData.coinName,
+      symbol: coinData.coinSymbol,
+      icon: <IconNARS />,
+      typeToken: false,
+      decimal: 2,
+    },
+    tla: {
+      name: "Lachain token",
+      symbol: "TLA",
+      icon: <IconTLA />,
+      typeToken: false,
+      decimal: 2,
+    },
+  };
+  
+
   const {
     name,
     token,

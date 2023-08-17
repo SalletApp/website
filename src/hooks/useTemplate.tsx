@@ -14,7 +14,26 @@ export function useTemplate(): ReturnUseTemplate {
   const { theme } = useParam();
   const { sallet, hulabaluza, ultraMusic } = useTheme();
 
-  const currentTheme = (theme === undefined || theme === null || theme === '') ? 'sallet' : (theme !== undefined && theme !== null && theme !== '') ? theme : 'sallet' ;
+  const hasValidValue = (value) => {
+    if (value === undefined || value === null || value === '') return false;
+
+    return true;
+  }
+
+  const coinDataPerTheme = {
+    sallet: {
+      coinSymbol: 'SAL',
+      coinName: 'Sallet Coin',
+    },
+    hulabaluza: {
+      coinSymbol: 'HUL',
+      coinName: 'Hula Coin',
+    },
+    ultraMusic: {
+      coinSymbol: 'ULT',
+      coinName: 'Ultra Coin',
+    }
+  }
 
   const allThemes: AllThemes = {
     sallet: {
@@ -39,24 +58,12 @@ export function useTemplate(): ReturnUseTemplate {
 
   const [ storedTheme, setStoredTheme ] = useLocalStorage<string>('theme');
   useEffect(() => {
-    if (storedTheme === undefined || storedTheme === null || storedTheme === '') {
-      if (theme === 'sallet') {
-        setStoredTheme(currentTheme);
-      }
-  
-      if (theme === 'hulabaluza') {
-        setStoredTheme(currentTheme);
-      }
-  
-      if (theme === 'ultraMusic') {
-        setStoredTheme(currentTheme);
+    if (hasValidValue(theme)) {
+      if (storedTheme !== theme) {
+        setStoredTheme(theme);
       }
     }
-
-    if (storedTheme !== theme) {
-      setStoredTheme(currentTheme);
-    }
-  }, [storedTheme, currentTheme]);
+  }, [storedTheme, theme]);
 
   /**
    * @function myTheme
@@ -98,5 +105,7 @@ export function useTemplate(): ReturnUseTemplate {
    */
   const chakraTheme = allThemes[myTheme()]?.theme ?? allThemes['sallet'].theme;
 
-  return { name, logo, background, chakraTheme };
+  const coinData = coinDataPerTheme[myTheme()] ?? coinDataPerTheme['sallet'];
+
+  return { name, logo, background, chakraTheme, coinData };
 }
