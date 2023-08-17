@@ -12,6 +12,7 @@ import useKeyPress from "src/hooks/useKeyPress";
 import Carousel from "src/components/Carousel";
 import Heading from "src/components/Shared/Heading";
 import { db } from "src/utils/db";
+import { useTemplate } from 'src/hooks/useTemplate';
 
 const Slide = ({ title, description, image }) => (
   <Flex direction="column" height="100%">
@@ -27,6 +28,8 @@ const Slide = ({ title, description, image }) => (
 );
 
 const Component = ({ onClose }) => {
+  const { logo } = useTemplate();
+
   const escapePress = useKeyPress("Escape");
 
   useEffect(() => {
@@ -51,6 +54,7 @@ const Component = ({ onClose }) => {
       <Header
         type="minimalModal"
         title="Testeando"
+        logo={logo}
         onClose={handleCloseModal}
       />
       <ScreenView>

@@ -22,10 +22,9 @@ import SpendItem from "../components/SpendItem";
 
 import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
 
-// import { getPrice } from './api/thegraph';
-import { getPrices } from "./api/prices";
 import bigNumberTokenToString from "src/hooks/useUtils";
 import formatAmountNumber from "src/lib/formatAmountNumber";
+import { useTemplate } from 'src/hooks/useTemplate';
 
 export async function getStaticProps() {
   // const { success, data } = await getPrices();
@@ -45,6 +44,8 @@ const Dashboard = () => {
   const { tokens } = useToken();
 
   if (!tokens) return null;
+
+  const { logo, name } = useTemplate();
 
   // General
   const [modalType, setModalType] = useState("");
@@ -72,9 +73,19 @@ const Dashboard = () => {
   return (
     <>
       <Head>
-        <title>Wallet - Sallet</title>
+        <title>{`Wallet - ${name}`}</title>
       </Head>
+      {/* <Flex
+        width='100%' 
+        height='100%' 
+        flexDirection='column' 
+        backgroundImage={`${allThemes[currentTheme]?.background} !important`}
+        backgroundRepeat='no-repeat'
+        backgroundPosition='center'
+        objectFit='cover'
+      > */}
       <Header
+        logo={logo}
         type={openModal ? "modal" : "page"}
         title={typeModal || ""}
         onClose={handleCloseFullModal}
@@ -157,7 +168,7 @@ const Dashboard = () => {
           />
           <Divider y={16} />
           <Flex>
-            <Button isBlock type="bezeledGray">
+            <Button isBlock type="bezeled" brand="primary" rounded="9999px" >
               Ver consumos
             </Button>
           </Flex>
@@ -165,8 +176,9 @@ const Dashboard = () => {
         </Container>
       </ScreenView>
 
+      <Divider y={32} />
       {/* Security */}
-      {wallet && !wallet?.backup && (
+      {/* {wallet && !wallet?.backup && (
         <Flex background="terciary15">
           <Container>
             <Divider y={16} />
@@ -185,9 +197,9 @@ const Dashboard = () => {
               </Link>
             </Flex>
             <Divider y={16} />
-          </Container>
+            </Container>
         </Flex>
-      )}
+      )} */}
 
       <FullModal
         type={modalType}
@@ -195,6 +207,7 @@ const Dashboard = () => {
         onClose={() => setOpenModal(false)}
       />
       <Navbar />
+      {/* </Flex> */}
     </>
   );
 };

@@ -25,7 +25,7 @@ const Index = () => {
 
   return (
     <>
-      <Header />
+      <Header logo='/img/logos/sallet.svg' />
       <ScreenView justify="center">
         <Container height={{ base: "100%", md: "auto" }}>
           <Flex
