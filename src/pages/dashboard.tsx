@@ -10,6 +10,7 @@ import ButtonCircle from "../components/Shared/ButtonCircle";
 import Link from "../components/Shared/Link";
 
 import Header from "src/components/Layout/Header";
+import Navbar from "src/components/Layout/Navbar";
 import Container from "src/components/Layout/Container";
 import ScreenView from "src/components/Layout/ScreenView";
 import FullModal from "src/components/FullModal";
@@ -193,6 +194,7 @@ const Dashboard = () => {
         open={openModal}
         onClose={() => setOpenModal(false)}
       />
+      <Navbar />
     </>
   );
 };
