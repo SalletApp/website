@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import { Text as TextDemo } from "@chakra-ui/react";
 import { ArrowDown, ArrowUp } from "react-feather";
 
 import { useAccount } from "../context/Account";
@@ -18,7 +17,7 @@ import Flex from "src/components/Shared/Flex";
 import Divider from "src/components/Shared/Divider";
 import Button from "src/components/Shared/Button";
 
-import Token from "../components/Token";
+import SpendItem from "../components/SpendItem";
 
 import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
 
@@ -86,7 +85,7 @@ const Dashboard = () => {
           <Flex direction="column" align="center">
             <Flex direction="column" justify="center" align="center" gap={8}>
               {/* POC */}
-              <TextDemo
+              {/* <TextDemo
                 bg="terciary15"
                 color="terciary"
                 p="4px 12px"
@@ -95,14 +94,18 @@ const Dashboard = () => {
                 fontWeight={"bold"}
               >
                 LaTestnet
-              </TextDemo>
+              </TextDemo> */}
               <Text size="small">Balance</Text>
             </Flex>
             <Divider y={16} />
-            <Text fontSize={32} isBold>
-              $
-              {formatAmountNumber(Number(bigNumberTokenToString(tokens?.nars)))}
-            </Text>
+            <Flex justify="center" gap={8}>
+              <Text fontSize={32} isBold style={{ marginTop: -5 }}>
+                {formatAmountNumber(
+                  Number(bigNumberTokenToString(tokens?.nars))
+                )}
+              </Text>
+              <Text fontSize={15}>LOLA</Text>
+            </Flex>
           </Flex>
 
           <Divider y={32} />
@@ -128,19 +131,33 @@ const Dashboard = () => {
           <Divider y={32} />
 
           {/* Tokens */}
-          <Text isBold>Tokens</Text>
+          <Text size="small">Consumos:</Text>
           <Divider y={8} />
-          <Token
-            name="nars"
-            token={tokens?.nars}
-            price={tokens?.nars}
+          <SpendItem
+            type="drink"
+            date="16/07/23"
+            amount={tokens?.nars}
+            name="LOLA"
             readOnly
           />
-          <Token name="tla" token={tokens?.tla} price={tokens?.tla} readOnly />
+          <SpendItem
+            type="merch"
+            date="16/07/23"
+            amount={tokens?.nars}
+            name="LOLA"
+            readOnly
+          />
+          <SpendItem
+            type="food"
+            date="16/07/23"
+            amount={tokens?.nars}
+            name="LOLA"
+            readOnly
+          />
           <Divider y={16} />
           <Flex>
             <Button isBlock type="bezeledGray">
-              Ver historial
+              Ver consumos
             </Button>
           </Flex>
           <Divider y={32} />

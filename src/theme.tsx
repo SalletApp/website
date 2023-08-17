@@ -1,8 +1,8 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme } from "@chakra-ui/react";
 
 const General = {
-  black: '#111111',
-  white: '#F3F3F3',
+  black: "#111111",
+  white: "#F3F3F3",
 };
 
 const theme = extendTheme({
@@ -12,26 +12,26 @@ const theme = extendTheme({
   },
   styles: {
     global: {
-      'html, body': {
-        width: '100%',
-        height: '100%',
-        overflowX: 'hidden',
-        backgroundColor: '#111111',
-        color: '#fff',
+      "html, body": {
+        width: "100%",
+        height: "100%",
+        overflowX: "hidden",
+        backgroundColor: "#111111",
+        color: "#fff",
       },
-      '#__next': {
-        height: '100%',
+      "#__next": {
+        height: "100%",
       },
     },
   },
   colors: {
     // brand
-    primary: '#B3E0B8',
-    primary15: '#B3E0B826',
-    secondary: '#F5C365',
-    secondary15: '#F5C36526',
-    terciary: '#DBA2A3',
-    terciary15: '#DBA2A326',
+    primary: "#B3E0B8",
+    primary15: "#B3E0B826",
+    secondary: "#F5C365",
+    secondary15: "#F5C36526",
+    terciary: "#DBA2A3",
+    terciary15: "#DBA2A326",
     // grays
     black: General.black,
     gray5: `${General.white}0C`,
@@ -40,8 +40,8 @@ const theme = extendTheme({
     gray35: `${General.white}59`,
     white: General.white,
     // validations
-    error: '#FF7070',
-    success: '#92C988',
+    error: "#FF7070",
+    success: "#92C988",
     // general
     background: General.black,
     text: General.white,
