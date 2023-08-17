@@ -92,7 +92,7 @@ export function useTheme(): ReturnUseTheme {
       terciary: "#DBA2A3",
       terciary15: "#DBA2A326",
       // general
-      background: General.black,
+      background: General.white,
       text: General.black,
     },
   });
@@ -111,7 +111,7 @@ export function useTheme(): ReturnUseTheme {
       // general
       background: General.black,
       text: General.white,
-    },
+    }
   });
 
   return { sallet, hulabaluza, ultraMusic };

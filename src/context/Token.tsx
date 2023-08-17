@@ -16,7 +16,10 @@ interface TokenContextInterface {
     nars: BigNumber;
     tla: BigNumber;
   };
-  sendTransaction: (address: string, mount: number, token: TokenName) => null;
+  sendTransaction: (address: string, mount: number, token: TokenName) => {
+    success: boolean;
+    error: any;
+  };
   sponsorTransaction: (address: string, mount: number, token: TokenName) => null;
   tokenContract: any;
 }
@@ -162,8 +165,6 @@ export function TokenWrapper({ children }) {
     const addressIsValid = ethers.utils.isAddress(toAddress);
     if (addressIsValid) {
       if (token === 'nars') {
-
-      
 
         try {
           const sponsorNuars = ethers.Wallet.fromMnemonic(process.env.SPONSOR_NUAR);
