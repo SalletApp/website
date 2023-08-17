@@ -1,8 +1,8 @@
+import Link from "next/link";
 import React from "react";
 import { Flex } from "@chakra-ui/react";
 
 import Container from "src/components/Layout/Container";
-import Link from "src/components/Shared/Link";
 import Text from "src/components/Shared/Text";
 import Divider from "src/components/Shared/Divider";
 import QrButton from "src/components/Shared/QrButton";
@@ -29,12 +29,9 @@ const Component: React.FunctionComponent<NavbarProps> = ({
   return (
     <Flex background="gray5">
       <Container>
-        <Divider y={16} />
-        <Flex justify="center">
+        <Flex justify="center"  gap={10}>
           <Link
-            style={{ backgroundColor: "transparent" }}
             href="/dashboard"
-            passHref
           >
             <Flex direction="column" align="center" gap={2}>
               <IconHouse
@@ -53,9 +50,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
             <QrButton />
           </div>
           <Link
-            style={{ backgroundColor: "transparent" }}
             href="/settings/backup"
-            passHref
           >
             <Flex direction="column" align="center" gap={2}>
               <IconSettings

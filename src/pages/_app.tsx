@@ -6,7 +6,7 @@ import { ChakraProvider, Flex } from '@chakra-ui/react';
 import { Analytics } from '@vercel/analytics/react';
 import { hotjar } from 'react-hotjar';
 
-import theme from '../theme';
+// import theme from '../theme';
 import { AppProps } from 'next/app';
 
 import { BlockchainWrapper } from '../context/Blockchain';
@@ -14,9 +14,12 @@ import { AccountWrapper } from '../context/Account';
 import { TokenWrapper } from '../context/Token';
 
 import * as gtag from '../lib/gtag';
+import { useTemplate } from 'src/hooks/useTemplate';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const { chakraTheme } = useTemplate();
+
   // Init Hotjar
   useEffect(() => {
     hotjar.initialize(3238996, 6);
@@ -33,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       router.events.off('hashChangeComplete', handleRouteChange);
     };
   }, [router.events]);
+
 
   return (
     <>
@@ -53,7 +57,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         }}
       />
 
-      <ChakraProvider theme={theme}>
+      <ChakraProvider theme={chakraTheme}>
         <BlockchainWrapper>
           <AccountWrapper>
             <TokenWrapper>

@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 
 const Component = (props) => {
-  const { children, brand = 'primary', size = 'large', type = 'filled', isBlock = false } = props;
+  const { children, brand = 'primary', size = 'large', type = 'filled', isBlock = false, rounded = '8px' } = props;
 
   const isLarge = size === 'large';
   const isSolid = type === 'filled';
@@ -25,7 +25,7 @@ const Component = (props) => {
 
     padding: isLarge ? '13px' : '4px 7px',
 
-    borderRadius: '8px',
+    borderRadius: rounded,
 
     color: isSolid ? 'background' : brand,
     fontSize: isLarge ? '16px' : '14px',

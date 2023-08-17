@@ -11,12 +11,14 @@ import Twitter from "src/components/Shared/Icons/Twitter";
 import Discord from "src/components/Shared/Icons/Discord";
 
 interface NavbarProps {
+  logo: string;
   title?: string;
   type?: "page" | "modal" | "minimalModal";
   onClose?: () => void;
 }
 
 const Component: React.FunctionComponent<NavbarProps> = ({
+  logo,
   title,
   type = "page",
   onClose,
@@ -35,14 +37,15 @@ const Component: React.FunctionComponent<NavbarProps> = ({
           h={"60px"}
           alignItems="center"
           justifyContent={isMinimalModal ? "flex-end" : "space-between"}
+          paddingY={"60px"}
         >
           {!isMinimalModal && (
             <Flex alignItems={"center"} gap={4}>
               <Image
-                src="/logo.svg"
+                src={logo}
                 alt="Sallet.app"
-                width={"111px"}
-                height={"40px"}
+                width='auto'
+                height="40px"
               />
               {!isPage && (
                 <>

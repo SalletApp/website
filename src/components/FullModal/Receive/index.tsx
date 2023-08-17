@@ -10,8 +10,11 @@ import Divider from "src/components/Shared/Divider";
 import AddressBox from "src/components/AddressBox";
 import ScreenView from "src/components/Layout/ScreenView";
 import Container from "src/components/Layout/Container";
+import { useTemplate } from 'src/hooks/useTemplate';
 
 const Component = ({ onClose }) => {
+  const { logo } = useTemplate();
+
   // Chakra
   const toast = useToast();
 
@@ -36,7 +39,7 @@ const Component = ({ onClose }) => {
 
   return (
     <>
-      <Header type="modal" title="receive" onClose={onClose} />
+      <Header type="modal" title="receive" onClose={onClose} logo={logo} />
       <ScreenView alignItems="center" justifyContent="center">
         <Flex
           flex={{ base: 1, md: "inherit" }}

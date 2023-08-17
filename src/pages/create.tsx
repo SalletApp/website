@@ -19,11 +19,17 @@ import Flex from "src/components/Shared/Flex";
 import Divider from "src/components/Shared/Divider";
 
 import * as gtag from "src/lib/gtag";
+import { useTheme } from 'src/hooks/useTheme';
+import { useParam } from 'src/hooks/useParam';
+import { AllThemes } from 'src/types/useTheme';
+import { useTemplate } from 'src/hooks/useTemplate';
 
 const Create = () => {
   const router = useRouter();
   const toast = useToast();
 
+  const { logo, name } = useTemplate();
+  
   // Context
   const { wallet, createWallet } = useAccount();
 
@@ -94,7 +100,9 @@ const Create = () => {
 
   if (loading) {
     return (
-      <ScreenView justify="center" align="center">
+      <ScreenView 
+        justify="center" 
+        align="center">
         <Spinner />
       </ScreenView>
     );
@@ -103,9 +111,9 @@ const Create = () => {
   return (
     <>
       <Head>
-        <title>Crear - Sallet</title>
+        <title>{`Crear - ${name}`}</title>
       </Head>
-      <Header />
+      <Header logo={logo} />
       <ScreenView justify="center">
         <Flex
           justifyContent={"center"}
@@ -157,7 +165,7 @@ const Create = () => {
             justify={"center"}
             gap={8}
           >
-            <Link type="bezeledGray" href="/" passHref>
+            <Link type="bezeled" href="/" passHref>
               Volver
             </Link>
             <Button

@@ -31,6 +31,7 @@ import useTruncatedAddress from "src/hooks/useTruncatedAddress";
 import bigNumberTokenToString from "src/hooks/useUtils";
 import { QRCodeScanner } from "src/components/QRCodeScanner";
 import formatAmountNumber from "src/lib/formatAmountNumber";
+import { useTemplate } from 'src/hooks/useTemplate';
 
 const listTokens = {
   nars: {
@@ -39,6 +40,8 @@ const listTokens = {
 };
 
 const Component = ({ onClose }) => {
+  const { logo } = useTemplate();
+
   // Chakra
   const toast = useToast();
 
@@ -238,7 +241,7 @@ const Component = ({ onClose }) => {
 
   return (
     <>
-      <Header type="modal" title="Testeando" onClose={handleCloseModal} />
+      <Header type="modal" title="Testeando" onClose={handleCloseModal} logo={logo} />
       <ScreenView justifyContent={{ base: "flex-start", md: "center" }}>
         <Container size="small">
           <Divider y={32} />

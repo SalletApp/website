@@ -1,7 +1,7 @@
 import { Heading as HeadingBox } from "@chakra-ui/react";
 
 const Heading = (props) => {
-  const { children, as = "h1", align = "left", color = "#fff" } = props;
+  const { children, as = "h1", align = "left", color = "" } = props;
 
   const variants = {
     h1: {

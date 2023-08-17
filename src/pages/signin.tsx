@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useToast, Link as LinkBox, Spinner } from "@chakra-ui/react";
+import { useToast, Link as LinkBox, Spinner, useTheme } from "@chakra-ui/react";
 
 import { useAccount } from "src/context/Account";
 
@@ -19,6 +19,9 @@ import Heading from "src/components/Shared/Heading";
 import Mnemonic from "src/components/Mnemonic";
 
 import * as gtag from "src/lib/gtag";
+import { AllThemes } from 'src/types/useTheme';
+import { useParam } from 'src/hooks/useParam';
+import { useTemplate } from 'src/hooks/useTemplate';
 
 const Signup = () => {
   const router = useRouter();
@@ -26,6 +29,8 @@ const Signup = () => {
 
   // Context
   const { signupWallet } = useAccount();
+
+  const { name, logo } = useTemplate();
 
   // Component
   const [password, setPassword] = useState("");
@@ -137,9 +142,9 @@ const Signup = () => {
   return (
     <>
       <Head>
-        <title>Ingresar - Sallet</title>
+        <title>{`Ingresar - ${name}`}</title>
       </Head>
-      <Header />
+      <Header logo={logo} />
       <ScreenView justify="center">
         <Container size="small">
           {showMnemonic ? (
