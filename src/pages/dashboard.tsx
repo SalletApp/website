@@ -112,7 +112,6 @@ const Dashboard = () => {
           <Text isBold>Tokens</Text>
           <Divider y={8} />
           <Token name='nars' token={tokens?.nars} price={tokens?.nars} readOnly />
-          <Token name='token' token={tokens?.token} price={tokens?.token} readOnly />
           <Divider y={16} />
           <Flex>
             <Button isBlock type='bezeledGray'>
