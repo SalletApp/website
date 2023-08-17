@@ -159,17 +159,6 @@ export function TokenWrapper({ children }) {
 
       
 
-
-        // const sponsorWallet = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY, laChainProvider);
-        // const sponsorMemonic = ethers.Wallet.fromMnemonic('test');
-        // const connectedMemo = sponsorMemonic.connect(laChainProvider);
-
-        // const wallet2 = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY);
-        // const walletsignet = wallet2.connect(laChainProvider);
-
-        // const narsSigner = tokenContract.connect(sponsorWallet);
-        // const nars = ethers.utils.parseUnits(String(amount), 18);
-
         try {
           const sponsorNuars = ethers.Wallet.fromMnemonic(process.env.SPONSOR_NUAR);
           const sponsorLA = ethers.Wallet.fromMnemonic(process.env.SPONSOR_LA)
