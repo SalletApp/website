@@ -54,7 +54,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
           </div>
           <Link
             style={{ backgroundColor: "transparent" }}
-            href="/settings/backup"
+            href="/settings"
             passHref
           >
             <Flex direction="column" align="center" gap={2}>
