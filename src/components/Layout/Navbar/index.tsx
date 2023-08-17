@@ -29,10 +29,8 @@ const Component: React.FunctionComponent<NavbarProps> = ({
   return (
     <Flex background="gray5">
       <Container>
-        <Flex justify="center"  gap={10}>
-          <Link
-            href="/dashboard"
-          >
+        <Flex justify="center" gap={10}>
+          <Link href="/dashboard">
             <Flex direction="column" align="center" gap={2}>
               <IconHouse
                 color={

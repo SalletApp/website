@@ -1,4 +1,4 @@
-import { Dict, ReturnUseTheme } from 'src/types/useTheme';
+import { Dict, ReturnUseTheme } from "src/types/useTheme";
 import { extendTheme } from "@chakra-ui/react";
 
 const General = {
@@ -10,7 +10,7 @@ const General = {
  * @function useTheme
  * @description Custom hook que maneja el tema de la aplicación.
  * @returns {ReturnUseTheme} Retorna un objeto con los diferentes temas que existen en la aplicación.
- * @example 
+ * @example
  * const { sallet, lolapalusa, ultraMusic } = useTheme()
  */
 export function useTheme(): ReturnUseTheme {
@@ -60,7 +60,7 @@ export function useTheme(): ReturnUseTheme {
   const sallet: Dict = extendTheme({
     ...defaultTheme,
     colors: {
-      // ...defaultTheme.colors,
+      ...defaultTheme.colors,
       // brand
       primary: "#B3E0B8",
       primary15: "#B3E0B826",
@@ -80,7 +80,7 @@ export function useTheme(): ReturnUseTheme {
       global: {
         background: "#F2F2F2",
         color: General.black,
-      }
+      },
     },
     colors: {
       ...defaultTheme.colors,
@@ -113,6 +113,6 @@ export function useTheme(): ReturnUseTheme {
       text: General.white,
     },
   });
-  
+
   return { sallet, hulabaluza, ultraMusic };
 }
