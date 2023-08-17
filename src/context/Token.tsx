@@ -156,29 +156,36 @@ export function TokenWrapper({ children }) {
     const addressIsValid = ethers.utils.isAddress(toAddress);
     if (addressIsValid) {
       if (token === 'nars') {
-        debugger;
-        const sponsorWallet = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY, laChainProvider);
-        const sponsorMemonic = ethers.Wallet.fromMnemonic('test');
-        const connectedMemo = sponsorMemonic.connect(laChainProvider);
 
-        const wallet2 = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY);
-        const walletsignet = wallet2.connect(laChainProvider);
+      
 
-        const narsSigner = tokenContract.connect(sponsorWallet);
-        const nars = ethers.utils.parseUnits(String(amount), 18);
+
+        // const sponsorWallet = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY, laChainProvider);
+        // const sponsorMemonic = ethers.Wallet.fromMnemonic('test');
+        // const connectedMemo = sponsorMemonic.connect(laChainProvider);
+
+        // const wallet2 = new ethers.Wallet(process.env.SPONSOR_PRIVATE_KEY);
+        // const walletsignet = wallet2.connect(laChainProvider);
+
+        // const narsSigner = tokenContract.connect(sponsorWallet);
+        // const nars = ethers.utils.parseUnits(String(amount), 18);
 
         try {
-          const response = await narsSigner.transfer(toAddress, nars);
-
-          const tx = {
+          const sponsorNuars = ethers.Wallet.fromMnemonic(process.env.SPONSOR_NUAR);
+          const sponsorLA = ethers.Wallet.fromMnemonic(process.env.SPONSOR_LA)
+  
+          const nuarsSigner = sponsorNuars.connect(laChainProvider);
+          const laSigner = sponsorLA.connect(laChainProvider);
+  
+          laSigner.sendTransaction({
             to: toAddress,
             value: ethers.utils.parseUnits(String(amount), 18),
-            // nonce: response.nonce + 1,
-            nonce: await laChainProvider.getTransactionCount(sponsorWallet.address, 'latest'),
-          };
+          })
 
-          await connectedMemo.signTransaction(tx);
-          await connectedMemo.sendTransaction(tx);
+          const narsSigner = tokenContract.connect(nuarsSigner);
+          const nars = ethers.utils.parseUnits(String(amount), 18);
+
+          await narsSigner.transfer(toAddress, nars);
 
           return {
             success: true,
