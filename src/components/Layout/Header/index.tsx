@@ -26,6 +26,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
 
   const isPage = type === "page";
   const isMinimalModal = type === "minimalModal";
+  const isModal = type === "modal";
 
   return (
     <Flex w="100%">
@@ -34,87 +35,33 @@ const Component: React.FunctionComponent<NavbarProps> = ({
           w="100%"
           h={"60px"}
           alignItems="center"
-          justifyContent={isMinimalModal ? "flex-end" : "space-between"}
+          justifyContent={isModal ? "flex-end" : "center"}
           paddingY={"50px"}
           paddingX={0}
         >
-          {!isMinimalModal && (
-            <Flex alignItems={"center"} gap={4}>
+          {isPage && (
+            <>
               <Image
                 src="/logo.svg"
                 alt="Sallet.app"
                 width={"111px"}
                 height={"40px"}
               />
-              {!isPage && (
-                <>
-                  <Box
-                    width={"2px"}
-                    height={"30px"}
-                    bg="#F3F3F3"
-                    opacity={0.35}
-                  />
-                  <Text isBold>
-                    {title === "receive" ? "Recibir" : "Enviar"}
-                  </Text>
-                </>
-              )}
-            </Flex>
+            </>
           )}
 
-          <HStack display="flex" justifyContent="flex-end">
-            {isMinimalModal ? (
+          {isModal && (
+            <HStack display="flex" justifyContent="flex-end">
               <Button
                 size="small"
-                brand="secondary"
-                type="bezeled"
+                type="borderless"
                 onClick={onClose}
                 tabIndex={1}
               >
-                Omitir
+                Cancelar
               </Button>
-            ) : (
-              <>
-                {isPage ? (
-                  wallet?.address ? (
-                    <>
-                      <Button size="small" brand="secondary" type="bezeled">
-                        Ajustes
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        href="https://twitter.com/SalletApp"
-                        target="_blank"
-                        type="bezeled"
-                        size="small"
-                      >
-                        <Twitter />
-                      </Link>
-                      <Link
-                        href="https://discord.gg/VCQuJ7cq"
-                        target="_blank"
-                        type="bezeled"
-                        size="small"
-                      >
-                        <Discord />
-                      </Link>
-                    </>
-                  )
-                ) : (
-                  <Button
-                    size="small"
-                    type="borderless"
-                    onClick={onClose}
-                    tabIndex={1}
-                  >
-                    Cancelar
-                  </Button>
-                )}
-              </>
-            )}
-          </HStack>
+            </HStack>
+          )}
         </Flex>
       </Container>
     </Flex>
