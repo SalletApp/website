@@ -7,7 +7,6 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "src/utils/db";
 
 import { useBlockchain } from "./Blockchain";
- 
 import { encrypt, decrypt } from "src/hooks/useCrypto";
 
 interface AccountInterface {
@@ -16,6 +15,7 @@ interface AccountInterface {
     address: { eth: string };
     account: { seedPhrase: string; password: string };
     backup: false;
+    showOnboarding: boolean;
   };
   createWallet: (password: string | number) => { success: boolean; error: any };
   signupWallet: (
@@ -31,7 +31,7 @@ const AccountContext = createContext<AccountInterface>({
     account: { seedPhrase: "", password: "" },
     backup: false,
   },
-  createWallet: () => ({ success: false, error: null, address: "" }),
+  createWallet: () => ({ success: false, error: null }),
   signupWallet: () => ({ success: false, error: null }),
 });
 
@@ -63,6 +63,7 @@ export function AccountWrapper({ children }) {
           },
           account: JSON.parse(decryptAccount),
           backup: itemDB?.backup,
+          showOnboarding: itemDB?.showOnboarding,
         });
       }
 
@@ -96,6 +97,7 @@ export function AccountWrapper({ children }) {
           },
           backup: false,
           version: 3,
+          showOnboarding: false,
         });
 
         await db.wallets.add({
@@ -103,6 +105,7 @@ export function AccountWrapper({ children }) {
           account: encrypt(accountInstance),
           backup: false,
           version: 3,
+          showOnboarding: false,
         });
 
         return { success: true, error: null, address: walletETH.address };
@@ -134,6 +137,7 @@ export function AccountWrapper({ children }) {
             account: encrypt(accountInstance),
             backup: true,
             version: 3,
+            showOnboarding: false,
           });
 
           return { success: true, error: null };
