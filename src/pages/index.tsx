@@ -36,7 +36,11 @@ const Index = () => {
             justify="center"
             maxWidth="500px"
           >
-            <Heading as="h1" align={{ base: "center", md: "left" }}>
+            <Heading
+              style={{ color: "#fff" }}
+              as="h1"
+              align={{ base: "center", md: "left" }}
+            >
               Un paso adelante hacia la libertad financiera.
             </Heading>
             <Divider y={8} />

@@ -207,7 +207,7 @@ const Dashboard = () => {
         onClose={() => setOpenModal(false)}
       />
       <Divider y={100} />
-      <Navbar />
+      {/* <Navbar /> */}
       {/* </Flex> */}
     </>
   );

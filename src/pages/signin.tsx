@@ -19,9 +19,9 @@ import Heading from "src/components/Shared/Heading";
 import Mnemonic from "src/components/Mnemonic";
 
 import * as gtag from "src/lib/gtag";
-import { AllThemes } from 'src/types/useTheme';
-import { useParam } from 'src/hooks/useParam';
-import { useTemplate } from 'src/hooks/useTemplate';
+import { AllThemes } from "src/types/useTheme";
+import { useParam } from "src/hooks/useParam";
+import { useTemplate } from "src/hooks/useTemplate";
 
 const Signup = () => {
   const router = useRouter();
@@ -165,7 +165,9 @@ const Signup = () => {
             </>
           ) : (
             <>
-              <Heading as="h2">Crea una contraseña.</Heading>
+              <Heading style={{ color: "#fff" }} as="h2">
+                Crea una contraseña.
+              </Heading>
               <Divider y={8} />
               <Text size="lg">
                 Si bien somos localfirst, necesitamos saber que eres realmente

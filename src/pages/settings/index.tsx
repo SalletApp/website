@@ -192,7 +192,7 @@ const Settings = () => {
         open={openModal}
         onClose={() => setOpenModal(false)}
       />
-      <Navbar />
+      {/* <Navbar /> */}
     </>
   );
 };
