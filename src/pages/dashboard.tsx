@@ -1,30 +1,31 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import { ArrowDown, ArrowUp } from "react-feather";
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { ArrowDown, ArrowUp } from 'react-feather';
 
-import { useAccount } from "../context/Account";
-import { useToken } from "../context/Token";
+import { useAccount } from '../context/Account';
+import { useToken } from '../context/Token';
 
-import Text from "../components/Shared/Text";
-import ButtonCircle from "../components/Shared/ButtonCircle";
-import Link from "../components/Shared/Link";
+import Text from '../components/Shared/Text';
+import ButtonCircle from '../components/Shared/ButtonCircle';
+import Link from '../components/Shared/Link';
 
-import Header from "src/components/Layout/Header";
-import Navbar from "src/components/Layout/Navbar";
-import Container from "src/components/Layout/Container";
-import ScreenView from "src/components/Layout/ScreenView";
-import FullModal from "src/components/FullModal";
-import Flex from "src/components/Shared/Flex";
-import Divider from "src/components/Shared/Divider";
-import Button from "src/components/Shared/Button";
+import Header from 'src/components/Layout/Header';
+import Navbar from 'src/components/Layout/Navbar';
+import Container from 'src/components/Layout/Container';
+import ScreenView from 'src/components/Layout/ScreenView';
+import FullModal from 'src/components/FullModal';
+import Flex from 'src/components/Shared/Flex';
+import Divider from 'src/components/Shared/Divider';
+import Button from 'src/components/Shared/Button';
 
-import SpendItem from "../components/SpendItem";
+import SpendItem from '../components/SpendItem';
 
-import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
+import { cryptoToUSD, formatPrice } from '../hooks/usePrice';
 
-import bigNumberTokenToString from "src/hooks/useUtils";
-import formatAmountNumber from "src/lib/formatAmountNumber";
-import { useTemplate } from "src/hooks/useTemplate";
+import bigNumberTokenToString from 'src/hooks/useUtils';
+import formatAmountNumber from 'src/lib/formatAmountNumber';
+import { useTemplate } from 'src/hooks/useTemplate';
+import { TOKEN_NAME_BURN, TOKEN_SYMBOL_BURN } from 'src/utils/token';
 
 export async function getStaticProps() {
   // const { success, data } = await getPrices();
@@ -48,9 +49,9 @@ const Dashboard = () => {
   const { logo, name } = useTemplate();
 
   // General
-  const [modalType, setModalType] = useState("");
+  const [modalType, setModalType] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [typeModal, setTypeModal] = useState("");
+  const [typeModal, setTypeModal] = useState('');
 
   const handleOpenFullModal = (type) => {
     setTypeModal(type);
@@ -60,12 +61,12 @@ const Dashboard = () => {
 
   const handleCloseFullModal = () => {
     setOpenModal(false);
-    setModalType("");
+    setModalType('');
   };
 
   useEffect(() => {
     if (wallet?.showOnboarding) {
-      setModalType("onboarding");
+      setModalType('onboarding');
       setOpenModal(true);
     }
   }, [wallet]);
@@ -84,18 +85,13 @@ const Dashboard = () => {
         backgroundPosition='center'
         objectFit='cover'
       > */}
-      <Header
-        logo={logo}
-        type={openModal ? "modal" : "page"}
-        title={typeModal || ""}
-        onClose={handleCloseFullModal}
-      />
-      <ScreenView justifyContent="center">
-        <Container size="small">
+      <Header logo={logo} type={openModal ? 'modal' : 'page'} title={typeModal || ''} onClose={handleCloseFullModal} />
+      <ScreenView justifyContent='center'>
+        <Container size='small'>
           <Divider y={32} />
           {/* Balance */}
-          <Flex direction="column" align="center">
-            <Flex direction="column" justify="center" align="center" gap={8}>
+          <Flex direction='column' align='center'>
+            <Flex direction='column' justify='center' align='center' gap={8}>
               {/* POC */}
               {/* <TextDemo
                 bg="terciary15"
@@ -107,68 +103,41 @@ const Dashboard = () => {
               >
                 LaTestnet
               </TextDemo> */}
-              <Text size="small">Balance</Text>
+              <Text size='small'>Balance</Text>
             </Flex>
             <Divider y={16} />
-            <Flex justify="center" gap={8}>
+            <Flex justify='center' gap={8}>
               <Text fontSize={32} isBold style={{ marginTop: -5 }}>
-                {formatAmountNumber(
-                  Number(bigNumberTokenToString(tokens?.nars))
-                )}
+                {formatAmountNumber(Number(bigNumberTokenToString(tokens?.nars)))}
               </Text>
-              <Text fontSize={15}>LOLA</Text>
+              <Text fontSize={15}>{TOKEN_NAME_BURN}</Text>
             </Flex>
           </Flex>
 
           <Divider y={32} />
 
           {/* Botones */}
-          <Flex justify="center">
-            <ButtonCircle
-              onClick={() => handleOpenFullModal("send")}
-              title="Enviar"
-            >
-              <ArrowUp color="#111" />
+          <Flex justify='center'>
+            <ButtonCircle onClick={() => handleOpenFullModal('send')} title='Enviar'>
+              <ArrowUp color='#111' />
             </ButtonCircle>
             <Divider x={16} />
-            <ButtonCircle
-              brand="secondary"
-              onClick={() => handleOpenFullModal("receive")}
-              title="Recibir"
-            >
-              <ArrowDown color="#111" />
+            <ButtonCircle brand='secondary' onClick={() => handleOpenFullModal('receive')} title='Recibir'>
+              <ArrowDown color='#111' />
             </ButtonCircle>
           </Flex>
 
           <Divider y={32} />
 
           {/* Tokens */}
-          <Text size="small">Consumos:</Text>
+          <Text size='small'>Consumos:</Text>
           <Divider y={8} />
-          <SpendItem
-            type="drink"
-            date="16/07/23"
-            amount={tokens?.nars}
-            name="LOLA"
-            readOnly
-          />
-          <SpendItem
-            type="merch"
-            date="16/07/23"
-            amount={tokens?.nars}
-            name="LOLA"
-            readOnly
-          />
-          <SpendItem
-            type="food"
-            date="16/07/23"
-            amount={tokens?.nars}
-            name="LOLA"
-            readOnly
-          />
+          <SpendItem type='drink' date='16/07/23' amount={tokens?.nars} name={TOKEN_SYMBOL_BURN} readOnly />
+          <SpendItem type='merch' date='16/07/23' amount={tokens?.nars} name={TOKEN_SYMBOL_BURN} readOnly />
+          <SpendItem type='food' date='16/07/23' amount={tokens?.nars} name={TOKEN_SYMBOL_BURN} readOnly />
           <Divider y={16} />
           <Flex>
-            <Button isBlock type="bezeled" brand="primary" rounded="9999px">
+            <Button isBlock type='bezeled' brand='primary' rounded='9999px'>
               Ver consumos
             </Button>
           </Flex>
@@ -201,11 +170,7 @@ const Dashboard = () => {
         </Flex>
       )} */}
 
-      <FullModal
-        type={modalType}
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-      />
+      <FullModal type={modalType} open={openModal} onClose={() => setOpenModal(false)} />
       <Divider y={100} />
       {/* <Navbar /> */}
       {/* </Flex> */}
