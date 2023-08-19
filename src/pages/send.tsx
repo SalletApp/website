@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import { Spinner, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
