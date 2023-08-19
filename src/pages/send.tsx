@@ -1,27 +1,19 @@
-// @ts-nocheck
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import { Spinner, useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 
-import { useBlockchain } from "src/context/Blockchain";
 import { useToken } from "src/context/Token";
 
 import Button from "src/components/Shared/Button";
 import Text from "src/components/Shared/Text";
 
-import Token from "src/components/Token";
-
-import InputWithButton from "src/components/InputWithButton";
-import Header from "src/components/Layout/Header";
 import ScreenView from "src/components/Layout/ScreenView";
 import Container from "src/components/Layout/Container";
 import Flex from "src/components/Shared/Flex";
 import Input from "src/components/Shared/Input";
 import Hr from "src/components/Shared/Hr";
 import Divider from "src/components/Shared/Divider";
-import QR from "src/components/Icons/QR";
-
-import { cryptoToUSD } from "src/hooks/usePrice";
 
 // import { getPrice } from 'src/pages/api/thegraph';
 import { getPrices } from "src/pages/api/prices";
@@ -31,26 +23,18 @@ import useTruncatedAddress from "src/hooks/useTruncatedAddress";
 import bigNumberTokenToString from "src/hooks/useUtils";
 import { QRCodeScanner } from "src/components/QRCodeScanner";
 import formatAmountNumber from "src/lib/formatAmountNumber";
-import { useTemplate } from 'src/hooks/useTemplate';
+import { useRouter } from "next/router";
 
-const listTokens = {
-  nars: {
-    name: "nARS",
-  },
-};
-
-const Component = ({ onClose }) => {
-  const { logo } = useTemplate();
-
+const Send = ({ onClose }) => {
+  const router = useRouter();
   // Chakra
   const toast = useToast();
 
   // Context
-  const { getGasPrice } = useBlockchain();
   const { sendTransaction, tokens } = useToken();
 
   // Tokens
-  const [tokenSelected, setTokenSelected] = useState(null);
+  const tokenSelected = "nars";
 
   // Component
   const [loading, setLoading] = useState(false);
@@ -58,43 +42,14 @@ const Component = ({ onClose }) => {
   const [mount, setMount] = useState(null);
 
   // Price
-  const [gasPrice, setGasPrice] = useState();
   const [addressIsValid, setAddressIsValid] = useState(false);
-  const [openReaderQR, setOpenReaderQR] = useState(false);
 
   useEffect(() => {
-    // setLoading(true);
-    async function init() {
-      try {
-        const gasPrice = await getGasPrice();
-
-        setGasPrice(gasPrice);
-      } catch (error) {
-        console.log("err", error);
-      }
+    const isValid = ethers.utils.isAddress(toAddress);
+    setAddressIsValid(isValid);
+    if (isValid) {
+      setStep("amount");
     }
-
-    !gasPrice && init();
-  }, [gasPrice]);
-
-  useEffect(() => {
-    setToAddress(null);
-    setAddressIsValid(false);
-  }, []);
-
-  useEffect(() => {
-    const isValid = ethers.utils.isAddress(toAddress);
-    setAddressIsValid(isValid);
-  }, [toAddress]);
-
-  useEffect(() => {
-    setToAddress(null);
-    setAddressIsValid(false);
-  }, []);
-
-  useEffect(() => {
-    const isValid = ethers.utils.isAddress(toAddress);
-    setAddressIsValid(isValid);
   }, [toAddress]);
 
   // Send transaction
@@ -134,14 +89,6 @@ const Component = ({ onClose }) => {
   const [step, setStep] = useState("address");
 
   const enterPress = useKeyPress("Enter");
-  const escapePress = useKeyPress("Escape");
-
-  //
-  useEffect(() => {
-    if (escapePress) {
-      handleCloseModal();
-    }
-  }, [escapePress]);
 
   useEffect(() => {
     if (enterPress) {
@@ -166,18 +113,10 @@ const Component = ({ onClose }) => {
   }, [enterPress]);
 
   const handleCloseModal = () => {
-    setMount(null);
-    setToAddress(null);
-    setGasPrice(null);
-    setLoading(false);
-    setTokenSelected("");
-    setStep("address");
-    setOpenReaderQR(false);
-    onClose();
+    router.push("/dashboard");
   };
 
   const handleChangeAddress = () => {
-    setTokenSelected("");
     setToAddress(null);
     setMount(null);
     setLoading(false);
@@ -185,7 +124,6 @@ const Component = ({ onClose }) => {
   };
 
   const handleChangeToken = () => {
-    setTokenSelected("");
     setStep("token");
     setLoading(false);
     setMount(null);
@@ -226,56 +164,28 @@ const Component = ({ onClose }) => {
   const handleShowSumary = async () => {
     setLoading(true);
     try {
-      const test = await getGasPrice();
-      console.log("test", test);
       setLoading(false);
       setStep("sumary");
     } catch (error) {
       console.log("error", error);
     }
   };
-
-  const handleShowReaderQR = () => {
-    setOpenReaderQR(!openReaderQR);
-  };
-
   return (
     <>
-      <Header type="modal" title="Testeando" onClose={handleCloseModal} logo={logo} />
       <ScreenView justifyContent={{ base: "flex-start", md: "center" }}>
         <Container size="small">
           <Divider y={32} />
           <Flex direction="column" gap="10px">
             {/* Step Account */}
-            {step === "address" ? (
-              <>
-                <QRCodeScanner
-                  toAddress={toAddress}
-                  setToAddress={setToAddress}
-                  isOpen={openReaderQR}
-                  addressIsValid={addressIsValid}
-                  onClose={handleShowReaderQR}
-                />
-                <Flex gap={8}>
-                  <InputWithButton
-                    placeholder="Ingresa una billetera"
-                    value={toAddress}
-                    onChange={setToAddress}
-                    onClick={setToAddress}
-                    addressIsValid={addressIsValid}
-                    setAddressIsValid={setAddressIsValid}
-                  />
-                  <div>
-                    <Button type="bezeled" onClick={handleShowReaderQR}>
-                      <QR />
-                    </Button>
-                  </div>
-                </Flex>
-                <Divider y={16} />
-                <Text align="center">
-                  <strong>Verifica</strong> siempre los últimos 3 caracteres.
-                </Text>
-              </>
+
+            {!addressIsValid ? (
+              <QRCodeScanner
+                toAddress={toAddress}
+                setToAddress={setToAddress}
+                isOpen={true}
+                addressIsValid={addressIsValid}
+                onClose={handleCloseModal}
+              />
             ) : (
               <>
                 <Flex justify="space-between" align="center">
@@ -299,46 +209,6 @@ const Component = ({ onClose }) => {
             )}
 
             {/* Step Token */}
-            {step === "token" ? (
-              <>
-                <Text size="large" isBold>
-                  ¿Qué deseas enviar?
-                </Text>
-                <Divider y={16} />
-                <Token
-                  name="nars"
-                  token={tokens?.nars}
-                  price={1}
-                  disabled={!toAddress}
-                  onClick={setTokenSelected}
-                  active={tokenSelected === "nars"}
-                />
-              </>
-            ) : (
-              step !== "address" && (
-                <>
-                  <Flex justify="space-between">
-                    <Text size="small">Token</Text>
-                    <Flex justify="end" align="center" gap={8}>
-                      {tokenSelected && (
-                        <Text isBold>{listTokens[tokenSelected]?.name}</Text>
-                      )}
-
-                      <div>
-                        <Button
-                          size="small"
-                          type="bezeled"
-                          onClick={handleChangeToken}
-                        >
-                          Cambiar
-                        </Button>
-                      </div>
-                    </Flex>
-                  </Flex>
-                  <Hr />
-                </>
-              )
-            )}
 
             {step === "amount" ? (
               <>
@@ -356,7 +226,7 @@ const Component = ({ onClose }) => {
                     type="number"
                     autoFocus
                     placeholder="0.00"
-                    iconLeft={"ARS"}
+                    iconLeft={"LOLA"}
                     value={mount}
                     onChange={(e) => setMount(e.target.value)}
                   />
@@ -366,7 +236,6 @@ const Component = ({ onClose }) => {
                 <Flex justify="center" gap={4}>
                   <Text>Disponible: </Text>
                   <Text isBold>
-                    $
                     {formatAmountNumber(
                       Number(bigNumberTokenToString(tokens?.nars))
                     )}
@@ -380,7 +249,7 @@ const Component = ({ onClose }) => {
                   <Flex justify="space-between">
                     <Text size="small">Monto</Text>
                     <Flex justify="end" align="center" gap={8}>
-                      <Text isBold>${Number(mount)?.toFixed(2)}</Text>
+                      <Text isBold>{Number(mount)?.toFixed(2)}</Text>
 
                       <div>
                         <Button
@@ -392,20 +261,6 @@ const Component = ({ onClose }) => {
                         </Button>
                       </div>
                     </Flex>
-                  </Flex>
-                  <Hr />
-                  <Flex justify="space-between">
-                    <Text size="small">Comision</Text>
-                    <Text isBold>${Number(gasPrice).toFixed(2)}</Text>
-                  </Flex>
-                  <Hr />
-                  <Flex justify="space-between">
-                    <Text size="large" isBold>
-                      Total
-                    </Text>
-                    <Text size="large" isBold>
-                      ${(Number(mount) + Number(gasPrice)).toFixed(2)}
-                    </Text>
                   </Flex>
                 </>
               )
@@ -426,19 +281,7 @@ const Component = ({ onClose }) => {
             <Button type="bezeledGray" onClick={handleCloseModal}>
               Cancelar
             </Button>
-            {step === "address" && (
-              <Button onClick={continueToken} isDisabled={!toAddress}>
-                {loading ? <Spinner /> : "Continuar"}
-              </Button>
-            )}
-            {step === "token" && (
-              <Button
-                onClick={() => tokenSelected && setStep("amount")}
-                isDisabled={!tokenSelected}
-              >
-                {loading ? <Spinner /> : "Seleccionar"}
-              </Button>
-            )}
+
             {step === "amount" && (
               <Button
                 onClick={handleShowSumary}
@@ -471,4 +314,4 @@ const Component = ({ onClose }) => {
   );
 };
 
-export default Component;
+export default Send;

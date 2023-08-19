@@ -6,8 +6,6 @@ export default class Document extends NextDocument {
     return (
       <Html>
         <Head>
-          <title>Sallet - Wallet non custodial</title>
-
           {/* Favicon */}
           <link rel='apple-touch-icon' sizes='180x180' href='/img/favicon/apple-touch-icon.png' />
           <link rel='icon' type='image/png' sizes='32x32' href='/img/favicon/favicon-32x32.png' />

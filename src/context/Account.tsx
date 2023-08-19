@@ -1,25 +1,36 @@
 // @ts-nocheck
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import { useRouter } from 'next/router';
-import { useToast } from '@chakra-ui/react';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from 'src/utils/db';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { useToast } from "@chakra-ui/react";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "src/utils/db";
 
-import { useBlockchain } from './Blockchain';
-
-import { encrypt, decrypt } from 'src/hooks/useCrypto';
+import { useBlockchain } from "./Blockchain";
+import { encrypt, decrypt } from "src/hooks/useCrypto";
 
 interface AccountInterface {
   signer: any;
-  wallet: { address: { eth: string }; account: { seedPhrase: string; password: string }; backup: false };
+  wallet: {
+    address: { eth: string };
+    account: { seedPhrase: string; password: string };
+    backup: false;
+    showOnboarding: boolean;
+  };
   createWallet: (password: string | number) => { success: boolean; error: any };
-  signupWallet: (mnemonic: string, password: string | number) => { success: boolean; error: any };
+  signupWallet: (
+    mnemonic: string,
+    password: string | number
+  ) => { success: boolean; error: any };
 }
 
 const AccountContext = createContext<AccountInterface>({
   signer: {},
-  wallet: { address: { eth: '' }, account: { seedPhrase: '', password: '' }, backup: false },
+  wallet: {
+    address: { eth: "" },
+    account: { seedPhrase: "", password: "" },
+    backup: false,
+  },
   createWallet: () => ({ success: false, error: null }),
   signupWallet: () => ({ success: false, error: null }),
 });
@@ -52,11 +63,14 @@ export function AccountWrapper({ children }) {
           },
           account: JSON.parse(decryptAccount),
           backup: itemDB?.backup,
+          showOnboarding: itemDB?.showOnboarding,
         });
       }
 
       if (!signer) {
-        const mnemonic = decrypt(JSON.parse(decryptAccount).seedPhrase).replaceAll('"', '');
+        const mnemonic = decrypt(
+          JSON.parse(decryptAccount).seedPhrase
+        ).replaceAll('"', "");
         const walletAccount = ethers.Wallet.fromMnemonic(mnemonic);
 
         const signer = walletAccount.connect(laChainProvider);
@@ -83,6 +97,7 @@ export function AccountWrapper({ children }) {
           },
           backup: false,
           version: 3,
+          showOnboarding: false,
         });
 
         await db.wallets.add({
@@ -90,9 +105,10 @@ export function AccountWrapper({ children }) {
           account: encrypt(accountInstance),
           backup: false,
           version: 3,
+          showOnboarding: false,
         });
 
-        return { success: true, error: null };
+        return { success: true, error: null, address: walletETH.address };
       } catch (error) {
         return { success: false, error: error };
       }
@@ -106,6 +122,7 @@ export function AccountWrapper({ children }) {
     const isValid = ethers.utils.isValidMnemonic(mnemonic);
     if (isValid) {
       const walletETH = ethers.Wallet.fromMnemonic(mnemonic);
+      console.log("private key", walletETH.privateKey);
       if (walletETH) {
         const accountInstance = {
           seedPhrase: encrypt(walletETH?.mnemonic?.phrase),
@@ -120,6 +137,7 @@ export function AccountWrapper({ children }) {
             account: encrypt(accountInstance),
             backup: true,
             version: 3,
+            showOnboarding: false,
           });
 
           return { success: true, error: null };
@@ -129,10 +147,10 @@ export function AccountWrapper({ children }) {
       }
     } else {
       toast({
-        title: 'Frase semilla incorrecta.',
-        description: 'Verifica que la frase semilla sea correcta.',
-        status: 'warning',
-        position: 'top',
+        title: "Frase semilla incorrecta.",
+        description: "Verifica que la frase semilla sea correcta.",
+        status: "warning",
+        position: "top",
         duration: 2000,
         isClosable: true,
       });
@@ -141,7 +159,11 @@ export function AccountWrapper({ children }) {
   };
 
   return (
-    <AccountContext.Provider value={{ wallet, createWallet, signupWallet, signer }}>{children}</AccountContext.Provider>
+    <AccountContext.Provider
+      value={{ wallet, createWallet, signupWallet, signer }}
+    >
+      {children}
+    </AccountContext.Provider>
   );
 }
 

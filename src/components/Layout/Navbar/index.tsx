@@ -1,66 +1,74 @@
-import React from 'react';
-import { Flex, HStack, Box, Image } from '@chakra-ui/react';
+import Link from "next/link";
+import React from "react";
+import { Flex } from "@chakra-ui/react";
 
-import { useAccount } from 'src/context/Account';
+import styles from "./Navbar.module.css";
 
-import Container from 'src/components/Layout/Container';
-import Link from 'src/components/Shared/Link';
-import Button from 'src/components/Shared/Button';
-import Text from 'src/components/Shared/Text';
-import Twitter from 'src/components/Shared/Icons/Twitter';
-import Discord from 'src/components/Shared/Icons/Discord';
+import Container from "src/components/Layout/Container";
+import Text from "src/components/Shared/Text";
+import Divider from "src/components/Shared/Divider";
+import QrButton from "src/components/Shared/QrButton";
+import IconHouse from "src/components/Icons/HOUSE";
+import IconSettings from "src/components/Icons/SETTINGS";
+
+import { useRouter } from "next/router";
 
 interface NavbarProps {
   title?: string;
-  type?: 'page' | 'modal';
+  type?: "page" | "modal" | "minimalModal";
   onClose?: () => void;
 }
 
-const Component: React.FunctionComponent<NavbarProps> = ({ title, type = 'page', onClose }) => {
-  // Context
-  const { wallet } = useAccount();
-
-  const isPage = type === 'page';
+const Component: React.FunctionComponent<NavbarProps> = ({
+  title,
+  type = "page",
+  onClose,
+}) => {
+  const router = useRouter();
+  const isDashboardPage = router.pathname === "/dashboard";
+  const isSettingsPage = router.pathname === "/settings";
 
   return (
-    <Flex w='100%'>
+    <Flex background="gray5" className={styles.container}>
       <Container>
-        <Flex w='100%' h={'60px'} alignItems='center' justifyContent='space-between'>
-          <Flex alignItems={'center'} gap={4}>
-            <Image src='/logo.svg' alt='Sallet.app' width={'111px'} height={'40px'} />
-            {!isPage && (
-              <>
-                <Box width={'2px'} height={'30px'} bg='#F3F3F3' opacity={0.35} />
-                <Text isBold>{title === 'receive' ? 'Recibir' : 'Enviar'}</Text>
-              </>
-            )}
-          </Flex>
-
-          <HStack display='flex' justifyContent='flex-end'>
-            {isPage ? (
-              wallet?.address ? (
-                <>
-                  <Button size='small' brand='secondary' type='bezeled'>
-                    Ajustes
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link href='https://twitter.com/SalletApp' target='_blank' type='bezeled' size='small'>
-                    <Twitter />
-                  </Link>
-                  <Link href='https://discord.gg/VCQuJ7cq' target='_blank' type='bezeled' size='small'>
-                    <Discord />
-                  </Link>
-                </>
-              )
-            ) : (
-              <Button size='small' type='borderless' onClick={onClose} tabIndex={1}>
-                Cancelar
-              </Button>
-            )}
-          </HStack>
+        <Flex justify="center" gap={10}>
+          <Link href="/dashboard">
+            <Flex direction="column" align="center" gap={2}>
+              <IconHouse
+                color={
+                  isDashboardPage
+                    ? "var(--chakra-colors-secondary)"
+                    : "var(--chakra-colors-text)"
+                }
+                width="25"
+                height="25"
+              />
+              <Text>Inicio</Text>
+            </Flex>
+          </Link>
+          <div style={{ marginTop: -30, marginBottom: -30 }}>
+            <QrButton />
+          </div>
+          <Link
+            style={{ backgroundColor: "transparent" }}
+            href="/settings"
+            passHref
+          >
+            <Flex direction="column" align="center" gap={2}>
+              <IconSettings
+                color={
+                  isSettingsPage
+                    ? "var(--chakra-colors-secondary)"
+                    : "var(--chakra-colors-text)"
+                }
+                width="25"
+                height="25"
+              />
+              <Text>Ajustes</Text>
+            </Flex>
+          </Link>
         </Flex>
+        <Divider y={16} />
       </Container>
     </Flex>
   );

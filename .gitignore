@@ -111,6 +111,7 @@ out/
 # General project
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
 
 # PWA
 public/sw.js

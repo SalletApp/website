@@ -1,13 +1,14 @@
+//@ts-nocheck
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { ArrowDown, ArrowUp } from "react-feather";
 
-import { useAccount } from "../context/Account";
-import { useToken } from "../context/Token";
+import { useAccount } from "../../context/Account";
+import { useToken } from "../../context/Token";
 
-import Text from "../components/Shared/Text";
-import ButtonCircle from "../components/Shared/ButtonCircle";
-import Link from "../components/Shared/Link";
+import Text from "../../components/Shared/Text";
+import ButtonCircle from "../../components/Shared/ButtonCircle";
+import Link from "../../components/Shared/Link";
 
 import Header from "src/components/Layout/Header";
 import Navbar from "src/components/Layout/Navbar";
@@ -18,13 +19,11 @@ import Flex from "src/components/Shared/Flex";
 import Divider from "src/components/Shared/Divider";
 import Button from "src/components/Shared/Button";
 
-import SpendItem from "../components/SpendItem";
+import SpendItem from "../../components/SpendItem";
 
-import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
-
+// import { getPrice } from './api/thegraph';
 import bigNumberTokenToString from "src/hooks/useUtils";
 import formatAmountNumber from "src/lib/formatAmountNumber";
-import { useTemplate } from "src/hooks/useTemplate";
 
 export async function getStaticProps() {
   // const { success, data } = await getPrices();
@@ -39,13 +38,11 @@ export async function getStaticProps() {
   };
 }
 
-const Dashboard = () => {
+const Settings = () => {
   const { wallet } = useAccount();
   const { tokens } = useToken();
 
   if (!tokens) return null;
-
-  const { logo, name } = useTemplate();
 
   // General
   const [modalType, setModalType] = useState("");
@@ -73,19 +70,9 @@ const Dashboard = () => {
   return (
     <>
       <Head>
-        <title>{`Wallet - ${name}`}</title>
+        <title>Configuracion - Sallet</title>
       </Head>
-      {/* <Flex
-        width='100%' 
-        height='100%' 
-        flexDirection='column' 
-        backgroundImage={`${allThemes[currentTheme]?.background} !important`}
-        backgroundRepeat='no-repeat'
-        backgroundPosition='center'
-        objectFit='cover'
-      > */}
       <Header
-        logo={logo}
         type={openModal ? "modal" : "page"}
         title={typeModal || ""}
         onClose={handleCloseFullModal}
@@ -125,6 +112,7 @@ const Dashboard = () => {
           {/* Botones */}
           <Flex justify="center">
             <ButtonCircle
+              brand="secondary"
               onClick={() => handleOpenFullModal("send")}
               title="Enviar"
             >
@@ -132,7 +120,6 @@ const Dashboard = () => {
             </ButtonCircle>
             <Divider x={16} />
             <ButtonCircle
-              brand="secondary"
               onClick={() => handleOpenFullModal("receive")}
               title="Recibir"
             >
@@ -168,7 +155,7 @@ const Dashboard = () => {
           />
           <Divider y={16} />
           <Flex>
-            <Button isBlock type="bezeled" brand="primary" rounded="9999px">
+            <Button isBlock type="bezeledGray">
               Ver consumos
             </Button>
           </Flex>
@@ -176,9 +163,8 @@ const Dashboard = () => {
         </Container>
       </ScreenView>
 
-      <Divider y={32} />
       {/* Security */}
-      {/* {wallet && !wallet?.backup && (
+      {wallet && !wallet?.backup && (
         <Flex background="terciary15">
           <Container>
             <Divider y={16} />
@@ -197,20 +183,18 @@ const Dashboard = () => {
               </Link>
             </Flex>
             <Divider y={16} />
-            </Container>
+          </Container>
         </Flex>
-      )} */}
+      )}
 
       <FullModal
         type={modalType}
         open={openModal}
         onClose={() => setOpenModal(false)}
       />
-      <Divider y={100} />
       <Navbar />
-      {/* </Flex> */}
     </>
   );
 };
 
-export default Dashboard;
+export default Settings;

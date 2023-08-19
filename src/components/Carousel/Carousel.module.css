@@ -1,0 +1,40 @@
+.slide {
+  display: none;
+  width: 100%;
+  height: 100%; /* Ajusta la altura según tus necesidades */
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slideActive {
+  display: block;
+  opacity: 1;
+  height: 100%;
+}
+
+.chip {
+  width: 20px;
+  height: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.chipDark {
+  background-color: var(--chakra-colors-gray25);
+}
+
+.chipActiveDark {
+  background-color: var(--chakra-colors-primary);
+}
+
+.chipLight {
+  background-color: #f3f3f3;
+}
+
+.chipActiveLight {
+  background-color: #111111;
+}
+
+.arrow {
+  cursor: pointer;
+}
