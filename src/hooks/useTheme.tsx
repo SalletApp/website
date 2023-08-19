@@ -35,10 +35,10 @@ export function useTheme(): ReturnUseTheme {
     },
     colors: {
       // brand
-      primary: "#B3E0B8",
-      primary15: "#B3E0B826",
-      secondary: "#F5C365",
-      secondary15: "#F5C36526",
+      primary: "#F5C365",
+      primary15: "#F5C36526",
+      secondary: "#B3E0B8",
+      secondary15: "#B3E0B826",
       terciary: "#DBA2A3",
       terciary15: "#DBA2A326",
       // grays
@@ -62,10 +62,10 @@ export function useTheme(): ReturnUseTheme {
     colors: {
       ...defaultTheme.colors,
       // brand
-      primary: "#B3E0B8",
-      primary15: "#B3E0B826",
-      secondary: "#F5C365",
-      secondary15: "#F5C36526",
+      primary: "#F5C365",
+      primary15: "#F5C36526",
+      secondary: "#B3E0B8",
+      secondary15: "#B3E0B826",
       terciary: "#DBA2A3",
       terciary15: "#DBA2A326",
       // general
@@ -85,10 +85,10 @@ export function useTheme(): ReturnUseTheme {
     colors: {
       ...defaultTheme.colors,
       // brand
-      primary: "#FC3801",
-      primary15: "#FC380126",
-      secondary: "#04BBAE",
-      secondary15: "#04BBAE26",
+      primary: "#04BBAE",
+      primary15: "#04BBAE26",
+      secondary: "#FC3801",
+      secondary15: "#FC380126",
       terciary: "#DBA2A3",
       terciary15: "#DBA2A326",
       // general
@@ -102,10 +102,10 @@ export function useTheme(): ReturnUseTheme {
     colors: {
       ...defaultTheme.colors,
       // brand
-      primary: "#AAF0FD",
-      primary15: "#AAF0FD26",
-      secondary: "#444444",
-      secondary15: "#44444426",
+      primary: "#444444",
+      primary15: "#44444426",
+      secondary: "#AAF0FD",
+      secondary15: "#AAF0FD26",
       terciary: "#DBA2A3",
       terciary15: "#DBA2A326",
       // general
@@ -125,15 +125,20 @@ export function useTheme(): ReturnUseTheme {
     colors: {
       ...defaultTheme.colors,
       // brand
-      primary: "#FC3801",
-      primary15: "#FC380126",
-      secondary: "#04BBAE",
-      secondary15: "#04BBAE26",
+      primary: "#4FAEE3",
+      primary15: "#4FAEE326",
+      secondary: "#FAB308",
+      secondary15: "#FAB30826",
       terciary: "#DBA2A3",
       terciary15: "#DBA2A326",
       // general
-      background: General.black,
+      background: "#F2F2F2",
       text: General.black,
+      // grays
+      gray5: `${General.black}0C`,
+      gray15: `${General.black}26`,
+      gray25: `${General.black}3F`,
+      gray35: `${General.black}59`,
     },
   });
 

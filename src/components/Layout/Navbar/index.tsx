@@ -2,6 +2,8 @@ import Link from "next/link";
 import React from "react";
 import { Flex } from "@chakra-ui/react";
 
+import styles from "./Navbar.module.css";
+
 import Container from "src/components/Layout/Container";
 import Text from "src/components/Shared/Text";
 import Divider from "src/components/Shared/Divider";
@@ -27,7 +29,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
   const isSettingsPage = router.pathname === "/settings";
 
   return (
-    <Flex background="gray5">
+    <Flex background="gray5" className={styles.container}>
       <Container>
         <Flex justify="center" gap={10}>
           <Link href="/dashboard">
@@ -35,7 +37,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
               <IconHouse
                 color={
                   isDashboardPage
-                    ? "var(--chakra-colors-primary)"
+                    ? "var(--chakra-colors-secondary)"
                     : "var(--chakra-colors-text)"
                 }
                 width="25"
@@ -56,7 +58,7 @@ const Component: React.FunctionComponent<NavbarProps> = ({
               <IconSettings
                 color={
                   isSettingsPage
-                    ? "var(--chakra-colors-primary)"
+                    ? "var(--chakra-colors-secondary)"
                     : "var(--chakra-colors-text)"
                 }
                 width="25"

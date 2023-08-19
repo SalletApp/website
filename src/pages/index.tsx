@@ -11,9 +11,11 @@ import Divider from "src/components/Shared/Divider";
 import Link from "src/components/Shared/Link";
 
 import Header from "src/components/Layout/Header";
+import { useTemplate } from "src/hooks/useTemplate";
 
 const Index = () => {
   const router = useRouter();
+  const { logo, name } = useTemplate();
 
   // Context
   const { wallet } = useAccount();
@@ -25,7 +27,7 @@ const Index = () => {
 
   return (
     <>
-      <Header logo='/img/logos/sallet.svg' />
+      <Header logo={logo} />
       <ScreenView justify="center">
         <Container height={{ base: "100%", md: "auto" }}>
           <Flex

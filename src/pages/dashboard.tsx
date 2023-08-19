@@ -24,7 +24,7 @@ import { cryptoToUSD, formatPrice } from "../hooks/usePrice";
 
 import bigNumberTokenToString from "src/hooks/useUtils";
 import formatAmountNumber from "src/lib/formatAmountNumber";
-import { useTemplate } from 'src/hooks/useTemplate';
+import { useTemplate } from "src/hooks/useTemplate";
 
 export async function getStaticProps() {
   // const { success, data } = await getPrices();
@@ -125,7 +125,6 @@ const Dashboard = () => {
           {/* Botones */}
           <Flex justify="center">
             <ButtonCircle
-              brand="secondary"
               onClick={() => handleOpenFullModal("send")}
               title="Enviar"
             >
@@ -133,6 +132,7 @@ const Dashboard = () => {
             </ButtonCircle>
             <Divider x={16} />
             <ButtonCircle
+              brand="secondary"
               onClick={() => handleOpenFullModal("receive")}
               title="Recibir"
             >
@@ -168,7 +168,7 @@ const Dashboard = () => {
           />
           <Divider y={16} />
           <Flex>
-            <Button isBlock type="bezeled" brand="primary" rounded="9999px" >
+            <Button isBlock type="bezeled" brand="primary" rounded="9999px">
               Ver consumos
             </Button>
           </Flex>
@@ -206,6 +206,7 @@ const Dashboard = () => {
         open={openModal}
         onClose={() => setOpenModal(false)}
       />
+      <Divider y={100} />
       <Navbar />
       {/* </Flex> */}
     </>

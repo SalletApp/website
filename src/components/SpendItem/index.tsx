@@ -27,12 +27,6 @@ const listTokens = {
   },
 };
 
-const icons = {
-  drink: <IconDrink />,
-  food: <IconFood />,
-  merch: <IconMerch />,
-};
-
 // const icons = {
 //   eth: IconETH,
 //   dai: IconDAI,
@@ -55,6 +49,12 @@ const Component: FunctionComponent<SpendItemProps> = (props) => {
   const amountToken = Number(bigNumberTokenToString(amount)).toFixed(
     listTokens[type]?.decimal
   );
+
+  const icons = {
+    drink: <IconDrink color="var(--chakra-colors-primary)" />,
+    food: <IconFood color="var(--chakra-colors-primary)" />,
+    merch: <IconMerch color="var(--chakra-colors-primary)" />,
+  };
 
   const icon = icons[type];
 

@@ -42,7 +42,7 @@ export function useTemplate(): ReturnUseTemplate {
     },
     ethArg: {
       name: "Ethereum Argentina",
-      logo: "/img/logos/ultraMusic.png",
+      logo: "/img/logos/eth-arg.png",
       background: "/img/backgrounds/ultraMusic.png",
       theme: ethArg,
     },
@@ -64,6 +64,10 @@ export function useTemplate(): ReturnUseTemplate {
       }
 
       if (theme === "ultraMusic") {
+        setStoredTheme(currentTheme);
+      }
+
+      if (theme === "ethArg") {
         setStoredTheme(currentTheme);
       }
     }
