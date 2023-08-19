@@ -114,5 +114,28 @@ export function useTheme(): ReturnUseTheme {
     },
   });
 
-  return { sallet, hulabaluza, ultraMusic };
+  const ethArg: Dict = extendTheme({
+    ...defaultTheme,
+    styles: {
+      global: {
+        background: "#F2F2F2",
+        color: General.black,
+      },
+    },
+    colors: {
+      ...defaultTheme.colors,
+      // brand
+      primary: "#FC3801",
+      primary15: "#FC380126",
+      secondary: "#04BBAE",
+      secondary15: "#04BBAE26",
+      terciary: "#DBA2A3",
+      terciary15: "#DBA2A326",
+      // general
+      background: General.black,
+      text: General.black,
+    },
+  });
+
+  return { sallet, hulabaluza, ultraMusic, ethArg };
 }
