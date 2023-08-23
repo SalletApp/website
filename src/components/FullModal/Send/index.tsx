@@ -34,7 +34,12 @@ import formatAmountNumber from "src/lib/formatAmountNumber";
 import { useTemplate } from "src/hooks/useTemplate";
 import { TOKEN_SYMBOL_BURN } from "src/utils/token";
 
-const Component = ({ onClose, address }) => {
+interface Props {
+  onClose: () => void;
+  address?: string;
+}
+
+const Component = ({ onClose, address }: Props) => {
   const listTokens = {
     nars: {
       name: TOKEN_SYMBOL_BURN,

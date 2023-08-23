@@ -7,7 +7,7 @@ import Send from "src/components/FullModal/Send";
 const Pay = () => {
   const router = useRouter();
   const address = router.query.address;
-  return <Send onClose={() => null} address={address} />;
+  return <Send onClose={() => null} address={address as string} />;
 };
 
 export default Pay;
