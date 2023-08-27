@@ -66,6 +66,9 @@ const Pay = () => {
   useEffect(() => {
     if (address) {
       const isValid = ethers.utils.isAddress(address);
+      if (!isValid) {
+        router.push("/");
+      }
       setAddressIsValid(isValid);
     }
   }, [address]);
@@ -84,11 +87,6 @@ const Pay = () => {
     setToAddress(null);
     setAddressIsValid(false);
   }, []);
-
-  useEffect(() => {
-    const isValid = ethers.utils.isAddress(address);
-    setAddressIsValid(isValid);
-  }, [toAddress]);
 
   // Send transaction
   const handleSendTransaction = async () => {
